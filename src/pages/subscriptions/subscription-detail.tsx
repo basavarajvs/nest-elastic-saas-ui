@@ -15,6 +15,7 @@ import {
 import { toast } from 'sonner'
 import { SubscriptionController_findOne } from '@/lib/api/wms-saas-core-api/subscriptions-billing/subscriptions-billing'
 import { SubscriptionController_getBillingCycles } from '@/lib/api/wms-saas-core-api/subscriptions-billing/subscriptions-billing'
+import { SubscriptionController_cancel, SubscriptionController_downgrade, SubscriptionController_upgrade } from '@/lib/api/wms-saas-core-api/billing-subscriptions/billing-subscriptions'
 import { customInstance } from '@/lib/http/httpClient'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -150,7 +151,7 @@ export function SubscriptionDetailPage() {
   })
 
   const cancelMutation = useMutation({
-    mutationFn: async () => { await customInstance(`/api/v1/subscriptions/${subId}/cancel`, { method: 'PATCH' }) },
+    mutationFn: async () => { await SubscriptionController_cancel(subId) },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['subscriptions'] })
       toast.success('Subscription cancelled')
@@ -161,9 +162,11 @@ export function SubscriptionDetailPage() {
 
   const changePlanMutation = useMutation({
     mutationFn: async ({ action, planId }: { action: string; planId: string }) => {
-      await customInstance(`/api/v1/subscriptions/${subId}/${action}`, {
-        method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ planId }),
-      })
+      if (action === 'upgrade') {
+        await SubscriptionController_upgrade(subId, { planId })
+      } else {
+        await SubscriptionController_downgrade(subId, { planId })
+      }
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['subscriptions'] })

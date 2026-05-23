@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react'
+import { useCallback, useMemo, useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { format } from 'date-fns'
 import {
@@ -6,10 +6,23 @@ import {
   RefreshCw,
 } from 'lucide-react'
 import { toast } from 'sonner'
-import { SecurityController_findAll } from '@/lib/api/wms-saas-core-api/security/security'
-import { SecurityController_getSummary } from '@/lib/api/wms-saas-core-api/security/security'
-import { SecurityController_resolve } from '@/lib/api/wms-saas-core-api/security/security'
+import {
+  SecurityController_findAll,
+  SecurityController_getSummary,
+  SecurityController_getUnresolved,
+  SecurityController_resolve,
+} from '@/lib/api/wms-saas-core-api/security/security'
 import type { SecurityControllerFindAllParams } from '@/lib/types/wms-saas-core-api'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
+import {
+  BarChart,
+  Bar,
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  Tooltip,
+  ResponsiveContainer,
+} from 'recharts'
 import { Input } from '@/components/ui/input'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -101,6 +114,7 @@ export function SecurityEventsPage() {
   const [dateFrom, setDateFrom] = useState('')
   const [dateTo, setDateTo] = useState('')
   const [resolveTarget, setResolveTarget] = useState<{ id: string; desc: string } | null>(null)
+  const [activeTab, setActiveTab] = useState<'all' | 'unresolved'>('all')
   const limit = 10
 
   const params: SecurityControllerFindAllParams = { page, limit }
@@ -124,6 +138,17 @@ export function SecurityEventsPage() {
   const meta = data?.meta ?? { total: 0, page: 1, limit: 10 }
   const totalPages = Math.ceil(meta.total / meta.limit)
 
+  const trendData = useMemo(() => {
+    const byDay: Record<string, number> = {}
+    events.forEach((e) => {
+      const day = (e.createdAt || '').slice(0, 10)
+      if (day) byDay[day] = (byDay[day] || 0) + 1
+    })
+    return Object.entries(byDay)
+      .sort(([a], [b]) => a.localeCompare(b))
+      .map(([date, count]) => ({ date, count }))
+  }, [events])
+
   const { data: summary } = useQuery({
     queryKey: ['security', 'summary'],
     queryFn: async () => {
@@ -132,6 +157,18 @@ export function SecurityEventsPage() {
     },
     staleTime: 60_000,
   })
+
+  const { data: unresolvedData, isLoading: unresolvedLoading, refetch: refetchUnresolved } = useQuery({
+    queryKey: ['security', 'unresolved'],
+    queryFn: async () => {
+      const res = await SecurityController_getUnresolved()
+      return (res as unknown as { data: SecurityEvent[] }).data ?? []
+    },
+    staleTime: 30_000,
+    enabled: activeTab === 'unresolved',
+  })
+
+  const unresolvedEvents = unresolvedData ?? []
 
   const handleSeverityFilter = useCallback((value: string) => {
     setSeverityFilter(value)
@@ -204,8 +241,35 @@ export function SecurityEventsPage() {
             <p className='text-2xl font-bold text-orange-600'>{summary?.highCount ?? '-'}</p>
           </CardContent>
         </Card>
-      </div>
+       </div>
 
+      {/* Trend Chart */}
+      {trendData.length > 1 && (
+        <Card>
+          <CardHeader className='pb-2'>
+            <CardTitle className='text-sm'>Events Trend (from current page)</CardTitle>
+          </CardHeader>
+          <CardContent className='h-[180px] pl-2'>
+            <ResponsiveContainer width='100%' height='100%'>
+              <BarChart data={trendData}>
+                <CartesianGrid strokeDasharray='3 3' />
+                <XAxis dataKey='date' tick={{ fontSize: 10 }} />
+                <YAxis tick={{ fontSize: 10 }} />
+                <Tooltip />
+                <Bar dataKey='count' fill='var(--primary)' radius={2} />
+              </BarChart>
+            </ResponsiveContainer>
+          </CardContent>
+        </Card>
+      )}
+
+      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as any)}>
+        <TabsList className='mb-2'>
+          <TabsTrigger value='all'>All Events</TabsTrigger>
+          <TabsTrigger value='unresolved'>Unresolved ({unresolvedEvents.length})</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value='all'>
       <Card>
         <CardHeader className='pb-3'>
           <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
@@ -349,24 +413,78 @@ export function SecurityEventsPage() {
         </CardContent>
       </Card>
 
-      {meta.total > 0 && (
-        <div className='flex items-center justify-between text-sm text-muted-foreground'>
-          <p>
-            Showing {(page - 1) * limit + 1}-{Math.min(page * limit, meta.total)} of {meta.total}
-          </p>
-          <div className='flex items-center gap-2'>
-            <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>
-              Previous
-            </Button>
-            <span className='text-xs'>Page {page} of {totalPages}</span>
-            <Button variant='outline' size='sm' disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
-              Next
-            </Button>
-          </div>
-        </div>
-      )}
+       {meta.total > 0 && (
+         <div className='flex items-center justify-between text-sm text-muted-foreground'>
+           <p>
+             Showing {(page - 1) * limit + 1}-{Math.min(page * limit, meta.total)} of {meta.total}
+           </p>
+           <div className='flex items-center gap-2'>
+             <Button variant='outline' size='sm' disabled={page <= 1} onClick={() => setPage((p) => Math.max(1, p - 1))}>
+               Previous
+             </Button>
+             <span className='text-xs'>Page {page} of {totalPages}</span>
+             <Button variant='outline' size='sm' disabled={page >= totalPages} onClick={() => setPage((p) => p + 1)}>
+               Next
+             </Button>
+           </div>
+         </div>
+       )}
+        </TabsContent>
 
-      <AlertDialog open={!!resolveTarget} onOpenChange={() => setResolveTarget(null)}>
+        <TabsContent value='unresolved'>
+          <Card>
+            <CardHeader className='pb-3'>
+              <div className='flex items-center justify-between'>
+                <div>
+                  <CardTitle>Unresolved Events</CardTitle>
+                  <CardDescription>Events requiring attention</CardDescription>
+                </div>
+                <Button variant='outline' size='icon' onClick={() => refetchUnresolved()}>
+                  <RefreshCw className='h-4 w-4' />
+                </Button>
+              </div>
+            </CardHeader>
+            <CardContent className='p-0'>
+              {unresolvedLoading ? (
+                <div className='p-6 space-y-3'>
+                  {Array.from({ length: 3 }).map((_, i) => <Skeleton key={i} className='h-10 w-full' />)}
+                </div>
+              ) : unresolvedEvents.length === 0 ? (
+                <div className='p-6 text-center text-sm text-muted-foreground'>No unresolved events</div>
+              ) : (
+                <Table>
+                  <TableHeader>
+                    <TableRow>
+                      <TableHead>Time</TableHead>
+                      <TableHead>Severity</TableHead>
+                      <TableHead>Type</TableHead>
+                      <TableHead>Description</TableHead>
+                      <TableHead>Actions</TableHead>
+                    </TableRow>
+                  </TableHeader>
+                  <TableBody>
+                    {unresolvedEvents.map((event) => (
+                      <TableRow key={event.id}>
+                        <TableCell className='text-sm'>{formatDate(event.createdAt)}</TableCell>
+                        <TableCell><Badge className={severityStyle(event.severity)}>{event.severity}</Badge></TableCell>
+                        <TableCell>{event.eventType}</TableCell>
+                        <TableCell className='max-w-[300px] truncate text-sm'>{event.description}</TableCell>
+                        <TableCell>
+                          <Button size='sm' variant='ghost' onClick={() => setResolveTarget({ id: event.id, desc: event.description ?? '' })}>
+                            Resolve
+                          </Button>
+                        </TableCell>
+                      </TableRow>
+                    ))}
+                  </TableBody>
+                </Table>
+              )}
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
+
+       <AlertDialog open={!!resolveTarget} onOpenChange={() => setResolveTarget(null)}>
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>Resolve Event</AlertDialogTitle>

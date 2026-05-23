@@ -22,6 +22,9 @@ import {
   Wrench,
   Palette,
   Monitor,
+  Server,
+  Settings2,
+  Heart,
 } from 'lucide-react'
 import { type SidebarData } from '../types'
 
@@ -78,17 +81,24 @@ export const sidebarData: SidebarData = {
     {
       title: 'Billing',
       items: [
+        { title: 'Dashboard', url: '/billing/dashboard', icon: LayoutDashboard, pattern: '^/billing/dashboard(/|$)' },
         { title: 'License Plans', url: '/license-plans', icon: CreditCard, pattern: '^/license-plans(/|$)' },
         { title: 'Subscriptions', url: '/subscriptions', icon: Banknote, pattern: '^/subscriptions(/|$)' },
         { title: 'Payments', url: '/billing/payments', icon: Banknote, pattern: '^/billing/payments(/|$)' },
       ],
     },
     {
-      title: 'Integrations',
+      title: 'System',
       items: [
-        { title: 'API Keys', url: '/api-keys', icon: Key, pattern: '^/api-keys(/|$)' },
-        { title: 'Webhooks', url: '/webhooks', icon: Webhook, pattern: '^/webhooks(/|$)' },
-        { title: 'Integrations', url: '/integrations', icon: Puzzle, pattern: '^/integrations(/|$)' },
+        { title: 'Global Settings', url: '/system/settings', icon: Settings2, pattern: '^/system/settings(/|$)' },
+        { title: 'Queue Monitor', url: '/system/queues', icon: Server, pattern: '^/system/queues(/|$)' },
+        { title: 'Request Log', url: '/system/request-log', icon: ScrollText, pattern: '^/system/request-log(/|$)' },
+        { title: 'Health', url: '/system/health', icon: Heart, pattern: '^/system/health(/|$)' },
+        { title: 'API Keys', url: '/security/api-keys', icon: Key, pattern: '^/security/api-keys(/|$)' },
+        { title: 'Webhooks', url: '/system/webhooks', icon: Webhook, pattern: '^/system/webhooks(/|$)' },
+        { title: 'Integrations', url: '/system/integrations', icon: Puzzle, pattern: '^/system/integrations(/|$)' },
+        { title: 'SMTP', url: '/system/smtp', icon: Mail, pattern: '^/system/smtp(/|$)' },
+        { title: 'Feature Flags', url: '/system/feature-flags', icon: Settings2, pattern: '^/system/feature-flags(/|$)' },
       ],
     },
     {
@@ -101,7 +111,10 @@ export const sidebarData: SidebarData = {
     {
       title: 'Security',
       items: [
+        { title: 'Sessions', url: '/security/sessions', icon: LayoutDashboard, pattern: '^/security/sessions(/|$)' },
         { title: 'Security Events', url: '/security', icon: ShieldAlert, pattern: '^/security(/|$)' },
+        { title: 'SSO / SAML', url: '/security/sso', icon: ShieldCheck, pattern: '^/security/sso(/|$)' },
+        { title: 'IP Rules', url: '/security/ip-rules', icon: ShieldAlert, pattern: '^/security/ip-rules(/|$)' },
         { title: 'Compliance', url: '/compliance', icon: ShieldCheck, pattern: '^/compliance(/|$)' },
         { title: 'Resource Quotas', url: '/quotas', icon: Gauge, pattern: '^/quotas(/|$)' },
       ],

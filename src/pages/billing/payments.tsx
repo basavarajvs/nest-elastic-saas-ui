@@ -1,9 +1,11 @@
 import { useMemo, useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
 import { format } from 'date-fns'
-import { RefreshCw, Search } from 'lucide-react'
-import { SubscriptionController_getPayments } from '@/lib/api/wms-saas-core-api/subscriptions-billing/subscriptions-billing'
+import { CheckCircle, Loader2, Plus, RefreshCw, Search } from 'lucide-react'
+import { toast } from 'sonner'
+import { SubscriptionController_getPayments, SubscriptionController_confirmPayment, SubscriptionController_requestPayment } from '@/lib/api/wms-saas-core-api/billing-subscriptions/billing-subscriptions'
 import { SystemAdminController_getPendingPayments } from '@/lib/api/wms-saas-core-api/system-admin/system-admin'
+import { SubscriptionController_findAll_v2 } from '@/lib/api/wms-saas-core-api/billing-subscriptions/billing-subscriptions'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -29,6 +31,16 @@ import {
   TableHeader,
   TableRow,
 } from '@/components/ui/table'
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from '@/components/ui/dialog'
+import { Label } from '@/components/ui/label'
 
 interface Payment {
   id: string
@@ -63,6 +75,25 @@ function formatPrice(amount?: number, currency?: string): string {
 export function PaymentsPage() {
   const [search, setSearch] = useState('')
   const [statusFilter, setStatusFilter] = useState('')
+  const [confirmPaymentId, setConfirmPaymentId] = useState<string | null>(null)
+  const [requestPaymentOpen, setRequestPaymentOpen] = useState(false)
+  const [confirmAmount, setConfirmAmount] = useState('')
+  const [confirmTxId, setConfirmTxId] = useState('')
+  const [confirmNotes, setConfirmNotes] = useState('')
+  
+  const [reqAmount, setReqAmount] = useState('')
+  const [reqSubId, setReqSubId] = useState('')
+  const [reqMethod, setReqMethod] = useState('')
+  const [reqDate, setReqDate] = useState(format(new Date(), 'yyyy-MM-dd'))
+
+  const subscriptions = useQuery({
+    queryKey: ['billing', 'subscriptions', 'all'],
+    queryFn: async () => {
+      const res = await SubscriptionController_findAll_v2()
+      return (res as unknown as { data: { id: string; tenantName?: string }[] }).data ?? []
+    },
+    staleTime: 60_000,
+  })
 
   const payments = useQuery({
     queryKey: ['payments', 'all'],
@@ -102,6 +133,43 @@ export function PaymentsPage() {
       return true
     })
   }, [allPayments, search, statusFilter])
+
+  const confirmMutation = useMutation({
+    mutationFn: async () => {
+      if (!confirmPaymentId) throw new Error('No payment selected')
+      await SubscriptionController_confirmPayment({
+        paymentId: confirmPaymentId,
+        confirmedAmount: Number(confirmAmount),
+        transactionId: confirmTxId,
+        notes: confirmNotes,
+      })
+    },
+    onSuccess: () => {
+      toast.success('Payment confirmed successfully')
+      setConfirmPaymentId(null)
+      payments.refetch()
+      pending.refetch()
+    },
+    onError: (err: Error) => toast.error(err.message ?? 'Failed to confirm payment'),
+  })
+
+  const requestMutation = useMutation({
+    mutationFn: async () => {
+      await SubscriptionController_requestPayment({
+        amount: Number(reqAmount),
+        subscriptionId: reqSubId,
+        paymentMethod: reqMethod,
+        paymentDate: new Date(reqDate).toISOString(),
+      })
+    },
+    onSuccess: () => {
+      toast.success('Payment requested successfully')
+      setRequestPaymentOpen(false)
+      payments.refetch()
+      pending.refetch()
+    },
+    onError: (err: Error) => toast.error(err.message ?? 'Failed to request payment'),
+  })
 
   const isLoading = payments.isLoading || pending.isLoading
   const isError = payments.isError || pending.isError
@@ -152,9 +220,15 @@ export function PaymentsPage() {
                 </SelectContent>
               </Select>
             </div>
-            <Button variant='outline' size='icon' onClick={() => { payments.refetch(); pending.refetch() }}>
-              <RefreshCw className='h-4 w-4' />
-            </Button>
+            <div className='flex items-center gap-2'>
+              <Button onClick={() => setRequestPaymentOpen(true)}>
+                <Plus className='mr-2 h-4 w-4' />
+                Request Payment
+              </Button>
+              <Button variant='outline' size='icon' onClick={() => { payments.refetch(); pending.refetch() }}>
+                <RefreshCw className='h-4 w-4' />
+              </Button>
+            </div>
           </div>
         </CardHeader>
         <CardContent className='p-0'>
@@ -174,6 +248,7 @@ export function PaymentsPage() {
                   <TableHead>Status</TableHead>
                   <TableHead className='hidden sm:table-cell'>Method</TableHead>
                   <TableHead className='hidden md:table-cell'>Date</TableHead>
+                  <TableHead className='text-right'>Actions</TableHead>
                 </TableRow>
               </TableHeader>
               <TableBody>
@@ -187,6 +262,19 @@ export function PaymentsPage() {
                     </TableCell>
                     <TableCell className='hidden text-sm text-muted-foreground sm:table-cell'>{p.paymentMethod ?? '-'}</TableCell>
                     <TableCell className='hidden text-sm text-muted-foreground md:table-cell'>{formatDate(p.paymentDate || p.createdAt)}</TableCell>
+                    <TableCell className='text-right'>
+                      {p.status?.toLowerCase() === 'pending' && (
+                        <Button variant='ghost' size='sm' onClick={() => {
+                          setConfirmPaymentId(p.id)
+                          setConfirmAmount(String(p.amount ?? ''))
+                          setConfirmTxId('')
+                          setConfirmNotes('')
+                        }}>
+                          <CheckCircle className='mr-2 h-4 w-4 text-green-600' />
+                          Confirm
+                        </Button>
+                      )}
+                    </TableCell>
                   </TableRow>
                 ))}
               </TableBody>
@@ -194,6 +282,77 @@ export function PaymentsPage() {
           )}
         </CardContent>
       </Card>
+
+      <Dialog open={!!confirmPaymentId} onOpenChange={(o) => !o && setConfirmPaymentId(null)}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Confirm Payment</DialogTitle>
+            <DialogDescription>Mark this pending payment as paid.</DialogDescription>
+          </DialogHeader>
+          <div className='space-y-4 py-2'>
+            <div className='space-y-2'>
+              <Label>Confirmed Amount</Label>
+              <Input type='number' value={confirmAmount} onChange={(e) => setConfirmAmount(e.target.value)} />
+            </div>
+            <div className='space-y-2'>
+              <Label>Transaction ID (Admin Ref)</Label>
+              <Input placeholder='e.g. Stripe charge ID' value={confirmTxId} onChange={(e) => setConfirmTxId(e.target.value)} />
+            </div>
+            <div className='space-y-2'>
+              <Label>Notes (Optional)</Label>
+              <Input value={confirmNotes} onChange={(e) => setConfirmNotes(e.target.value)} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant='outline' onClick={() => setConfirmPaymentId(null)}>Cancel</Button>
+            <Button disabled={confirmMutation.isPending || !confirmTxId || !confirmAmount} onClick={() => confirmMutation.mutate()}>
+              {confirmMutation.isPending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+              Confirm Payment
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+
+      <Dialog open={requestPaymentOpen} onOpenChange={setRequestPaymentOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Request Payment</DialogTitle>
+            <DialogDescription>Manually create a payment request for a subscription.</DialogDescription>
+          </DialogHeader>
+          <div className='space-y-4 py-2'>
+            <div className='space-y-2'>
+              <Label>Subscription</Label>
+              <Select value={reqSubId} onValueChange={setReqSubId}>
+                <SelectTrigger><SelectValue placeholder='Select subscription' /></SelectTrigger>
+                <SelectContent>
+                  {subscriptions.data?.map(s => (
+                    <SelectItem key={s.id} value={s.id}>{s.tenantName ?? s.id}</SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className='space-y-2'>
+              <Label>Amount</Label>
+              <Input type='number' value={reqAmount} onChange={(e) => setReqAmount(e.target.value)} />
+            </div>
+            <div className='space-y-2'>
+              <Label>Payment Method</Label>
+              <Input placeholder='e.g. credit_card, wire_transfer' value={reqMethod} onChange={(e) => setReqMethod(e.target.value)} />
+            </div>
+            <div className='space-y-2'>
+              <Label>Payment Date</Label>
+              <Input type='date' value={reqDate} onChange={(e) => setReqDate(e.target.value)} />
+            </div>
+          </div>
+          <DialogFooter>
+            <Button variant='outline' onClick={() => setRequestPaymentOpen(false)}>Cancel</Button>
+            <Button disabled={requestMutation.isPending || !reqSubId || !reqAmount || !reqMethod} onClick={() => requestMutation.mutate()}>
+              {requestMutation.isPending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+              Submit Request
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
     </div>
   )
 }

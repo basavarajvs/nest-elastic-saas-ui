@@ -7,16 +7,18 @@ import {
   Calendar,
   FilePenLine,
   Globe,
+  KeyRound,
   Loader2,
   Mail,
   MapPin,
   ShieldOff,
   ShieldCheck,
+  Trash2,
   User as UserIcon,
   XCircle,
 } from 'lucide-react'
 import { toast } from 'sonner'
-import { UserController_findOne } from '@/lib/api/wms-saas-core-api/users/users'
+import { UserController_findOne, UserController_remove, UserController_resetPin } from '@/lib/api/wms-saas-core-api/users/users'
 import { UserController_deactivate } from '@/lib/api/wms-saas-core-api/users/users'
 import { UserController_reactivate } from '@/lib/api/wms-saas-core-api/users/users'
 import { UserController_revokeRole } from '@/lib/api/wms-saas-core-api/users/users'
@@ -81,7 +83,7 @@ export function UserDetailPage() {
   const search = useSearch({ from: '/_authenticated/users/$id' })
   const navigate = useNavigate()
   const queryClient = useQueryClient()
-  const [confirmAction, setConfirmAction] = useState<'deactivate' | 'reactivate' | null>(null)
+  const [confirmAction, setConfirmAction] = useState<'deactivate' | 'reactivate' | 'delete' | null>(null)
 
   const user = useQuery({
     queryKey: ['users', 'detail', userId],
@@ -108,6 +110,25 @@ export function UserDetailPage() {
       setConfirmAction(null)
     },
     onError: (err: Error) => toast.error(err.message ?? 'Failed to update user status'),
+  })
+
+  const resetPinMutation = useMutation({
+    mutationFn: async () => {
+      await UserController_resetPin(userId)
+    },
+    onSuccess: () => toast.success('PIN reset email sent to user'),
+    onError: (err: Error) => toast.error(err.message ?? 'Failed to reset PIN'),
+  })
+
+  const deleteMutation = useMutation({
+    mutationFn: async () => {
+      await UserController_remove(userId)
+    },
+    onSuccess: () => {
+      toast.success('User deleted')
+      navigate({ to: '/users' })
+    },
+    onError: (err: Error) => toast.error(err.message ?? 'Failed to delete user'),
   })
 
   const revokeRoleMutation = useMutation({
@@ -154,6 +175,12 @@ export function UserDetailPage() {
                   <ShieldCheck className='mr-2 h-4 w-4' /> Reactivate
                 </Button>
               )}
+              <Button variant='outline' onClick={() => resetPinMutation.mutate()} disabled={resetPinMutation.isPending}>
+                <KeyRound className='mr-2 h-4 w-4' /> Reset PIN
+              </Button>
+              <Button variant='outline' className='text-destructive' onClick={() => setConfirmAction('delete')}>
+                <Trash2 className='mr-2 h-4 w-4' /> Delete
+              </Button>
             </>
           ) : null}
         </div>
@@ -304,22 +331,31 @@ export function UserDetailPage() {
         <AlertDialogContent>
           <AlertDialogHeader>
             <AlertDialogTitle>
-              {confirmAction === 'deactivate' ? 'Deactivate User' : 'Reactivate User'}
+              {confirmAction === 'deactivate' ? 'Deactivate User' : confirmAction === 'reactivate' ? 'Reactivate User' : 'Delete User'}
             </AlertDialogTitle>
             <AlertDialogDescription>
               {confirmAction === 'deactivate'
                 ? `Are you sure you want to deactivate "${data?.firstName} ${data?.lastName}"? They will lose access to the platform.`
-                : `Are you sure you want to reactivate "${data?.firstName} ${data?.lastName}"?`}
+                : confirmAction === 'reactivate' 
+                ? `Are you sure you want to reactivate "${data?.firstName} ${data?.lastName}"?`
+                : `Are you sure you want to permanently delete "${data?.firstName} ${data?.lastName}"? This action cannot be undone.`}
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
             <AlertDialogAction
-              disabled={statusMutation.isPending}
-              onClick={() => confirmAction && statusMutation.mutate(confirmAction)}
+              className={confirmAction === 'delete' ? 'bg-destructive text-destructive-foreground hover:bg-destructive/90' : ''}
+              disabled={statusMutation.isPending || deleteMutation.isPending}
+              onClick={() => {
+                if (confirmAction === 'delete') {
+                  deleteMutation.mutate()
+                } else if (confirmAction) {
+                  statusMutation.mutate(confirmAction)
+                }
+              }}
             >
-              {statusMutation.isPending && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
-              {confirmAction === 'deactivate' ? 'Deactivate' : 'Reactivate'}
+              {(statusMutation.isPending || deleteMutation.isPending) && <Loader2 className='mr-2 h-4 w-4 animate-spin' />}
+              {confirmAction === 'deactivate' ? 'Deactivate' : confirmAction === 'reactivate' ? 'Reactivate' : 'Delete'}
             </AlertDialogAction>
           </AlertDialogFooter>
         </AlertDialogContent>

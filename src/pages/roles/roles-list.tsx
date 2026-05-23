@@ -14,6 +14,7 @@ import { toast } from 'sonner'
 import { RoleController_findAll } from '@/lib/api/wms-saas-core-api/roles/roles'
 import { RoleController_delete } from '@/lib/api/wms-saas-core-api/roles/roles'
 import { PageHeader, LoadingState, ErrorState, EmptyState } from '@/components/common'
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
 import {
@@ -103,6 +104,7 @@ export function RolesPage() {
   const [search, setSearch] = useState('')
   const [typeFilter, setTypeFilter] = useState('')
   const [debouncedSearch, setDebouncedSearch] = useState('')
+  const [activeTab, setActiveTab] = useState<'list' | 'hierarchy'>('list')
   const limit = 10
 
   const { data, isLoading, isError, error, refetch } = useRoles(page, limit, debouncedSearch, typeFilter)
@@ -145,9 +147,57 @@ export function RolesPage() {
     onError: (err: Error) => toast.error(err.message ?? 'Failed to delete role'),
   })
 
+  function renderRoleNode(node: any, depth: number): React.ReactNode {
+    const indent = depth * 16
+    return (
+      <div key={node.id} style={{ marginLeft: indent }} className='py-1 border-l pl-2 border-muted/50'>
+        <div className='flex items-center gap-2 text-sm'>
+          <Badge variant='outline' className={typeStyle(node.roleType)}>
+            {node.roleType ?? 'role'}
+          </Badge>
+          <span className='font-medium'>{node.roleName}</span>
+          <span className='text-xs text-muted-foreground font-mono'>({node.roleCode})</span>
+          {node.parentRoleId && <span className='text-[10px] text-muted-foreground'>child</span>}
+          <Button variant='ghost' size='sm' className='h-6 px-1.5 text-xs' asChild>
+            <Link to='/roles/$id' params={{ id: node.id }}>view</Link>
+          </Button>
+        </div>
+        {node.children?.length > 0 && (
+          <div className='mt-0.5'>{node.children.map((c: any) => renderRoleNode(c, depth + 1))}</div>
+        )}
+      </div>
+    )
+  }
+
   const roles = data?.data ?? []
   const meta = data?.meta ?? { total: 0, page: 1, limit: 10 }
   const totalPages = Math.ceil(meta.total / meta.limit)
+
+  const { data: allRolesData } = useQuery({
+    queryKey: ['roles', 'all-for-hierarchy'],
+    queryFn: async () => {
+      const res = await RoleController_findAll({ page: 1, limit: 1000 } as never)
+      return (res as unknown as { data: Role[] }).data ?? []
+    },
+    staleTime: 60_000,
+    enabled: activeTab === 'hierarchy',
+  })
+
+  const allRolesForTree = allRolesData ?? roles
+
+  const roleTree = useMemo(() => {
+    const roleMap = new Map(allRolesForTree.map((r) => [r.id, { ...r, children: [] as any[] }]))
+    const roots: any[] = []
+    allRolesForTree.forEach((r) => {
+      const node = roleMap.get(r.id)!
+      if (r.parentRoleId && roleMap.has(r.parentRoleId)) {
+        roleMap.get(r.parentRoleId)!.children.push(node)
+      } else {
+        roots.push(node)
+      }
+    })
+    return roots
+  }, [allRolesForTree])
 
   return (
     <div className='space-y-6'>
@@ -155,15 +205,37 @@ export function RolesPage() {
         title='Roles & Permissions'
         description='Manage roles and their permissions across the platform'
         actions={
-          <Button asChild>
-            <Link to='/roles/new'>
-              <Plus className='mr-2 h-4 w-4' />
-              Create Role
-            </Link>
-          </Button>
+          <div className='flex gap-2'>
+            <Button variant='outline' onClick={() => {
+              const rows = roles.map((r) => [r.roleName, r.roleCode, r.roleType, r.createdAt].join(','))
+              const csv = ['Name,Code,Type,Created', ...rows].join('\n')
+              const blob = new Blob([csv], { type: 'text/csv' })
+              const url = URL.createObjectURL(blob)
+              const a = document.createElement('a')
+              a.href = url
+              a.download = 'roles.csv'
+              a.click()
+              URL.revokeObjectURL(url)
+            }}>
+              CSV
+            </Button>
+            <Button asChild>
+              <Link to='/roles/new'>
+                <Plus className='mr-2 h-4 w-4' />
+                Create Role
+              </Link>
+            </Button>
+          </div>
         }
       />
 
+      <Tabs value={activeTab} onValueChange={(v) => setActiveTab(v as 'list' | 'hierarchy')}>
+        <TabsList>
+          <TabsTrigger value='list'>Browse Roles</TabsTrigger>
+          <TabsTrigger value='hierarchy'>Hierarchy</TabsTrigger>
+        </TabsList>
+
+        <TabsContent value='list'>
       <Card>
         <CardHeader className='pb-3'>
           <div className='flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between'>
@@ -256,11 +328,11 @@ export function RolesPage() {
                 ))}
               </TableBody>
             </Table>
-          )}
-        </CardContent>
-      </Card>
-
-      {/* Pagination */}
+           )}
+         </CardContent>
+       </Card>
+ 
+       {/* Pagination (list only) */}
       {meta.total > 0 && (
         <div className='flex items-center justify-between text-sm text-muted-foreground'>
           <p>
@@ -277,6 +349,35 @@ export function RolesPage() {
           </div>
         </div>
       )}
+        </TabsContent>
+
+        <TabsContent value='hierarchy'>
+          <Card>
+            <CardHeader className='pb-3'>
+              <CardTitle>Role Hierarchy</CardTitle>
+              <CardDescription>
+                Visual inheritance tree (parent → child roles). Based on parentRoleId links.
+              </CardDescription>
+            </CardHeader>
+            <CardContent>
+              {allRolesForTree.length === 0 ? (
+                <div className='text-sm text-muted-foreground'>No roles to display hierarchy.</div>
+              ) : (
+                <div className='space-y-1 text-sm'>
+                  {roleTree.length > 0 ? (
+                    roleTree.map((root) => renderRoleNode(root, 0))
+                  ) : (
+                    allRolesForTree.map((r) => renderRoleNode({ ...r, children: [] }, 0))
+                  )}
+                </div>
+              )}
+              <p className='mt-4 text-xs text-muted-foreground'>
+                Note: Approve/revoke actions for role assignments are available on user detail pages.
+              </p>
+            </CardContent>
+          </Card>
+        </TabsContent>
+      </Tabs>
 
       {/* Delete Confirmation */}
       <AlertDialog open={!!deleteTarget} onOpenChange={() => setDeleteTarget(null)}>

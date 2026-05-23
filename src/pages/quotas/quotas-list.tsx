@@ -2,10 +2,15 @@ import { useState } from 'react'
 import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query'
 import { Loader2, Plus, RefreshCw, Search } from 'lucide-react'
 import { toast } from 'sonner'
-import { QuotaController_findAll } from '@/lib/api/wms-saas-core-api/resource-quotas-usage/resource-quotas-usage'
-import { QuotaController_create } from '@/lib/api/wms-saas-core-api/resource-quotas-usage/resource-quotas-usage'
-import { QuotaController_getUsageMetrics } from '@/lib/api/wms-saas-core-api/resource-quotas-usage/resource-quotas-usage'
-import type { CreateResourceQuotaDto } from '@/lib/types/wms-saas-core-api'
+import {
+  QuotaController_findAll,
+  QuotaController_create,
+  QuotaController_getUsageMetrics,
+  QuotaController_update,
+  QuotaController_recordUsage,
+  QuotaController_findOne,
+} from '@/lib/api/wms-saas-core-api/resource-quotas-usage/resource-quotas-usage'
+import type { CreateResourceQuotaDto, UpdateResourceQuotaDto, RecordUsageMetricDto } from '@/lib/types/wms-saas-core-api'
 import { PageHeader, LoadingState, ErrorState, EmptyState } from '@/components/common'
 import { Badge } from '@/components/ui/badge'
 import { Button } from '@/components/ui/button'
@@ -75,6 +80,10 @@ export function ResourceQuotasPage() {
   const queryClient = useQueryClient()
   const [search, setSearch] = useState('')
   const [createOpen, setCreateOpen] = useState(false)
+  const [editOpen, setEditOpen] = useState(false)
+  const [selected, setSelected] = useState<ResourceQuota | null>(null)
+  const [recordOpen, setRecordOpen] = useState(false)
+  const [recordForm, setRecordForm] = useState({ usageAmount: '', unit: '' })
 
   const { data: quotasData, isLoading, isError, error, refetch } = useQuery({
     queryKey: ['quotas', 'list'],
@@ -138,16 +147,64 @@ export function ResourceQuotasPage() {
     },
   })
 
+  const updateMutation = useMutation({
+    mutationFn: async ({ id, data }: { id: string; data: Partial<ResourceQuota> }) => {
+      const dto: UpdateResourceQuotaDto = {}
+      if (data.limitAmount !== undefined) dto.limitAmount = data.limitAmount
+      if (data.autoScale !== undefined) dto.autoScale = data.autoScale
+      await QuotaController_update(id, dto)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['quotas', 'list'] })
+      toast.success('Quota updated')
+      setEditOpen(false)
+      setSelected(null)
+    },
+    onError: (err) => toast.error((err as Error).message ?? 'Update failed'),
+  })
+
+  const recordMutation = useMutation({
+    mutationFn: async (dto: RecordUsageMetricDto) => {
+      await QuotaController_recordUsage(dto)
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['quotas', 'list'] })
+      queryClient.invalidateQueries({ queryKey: ['quotas', 'usage-metrics'] })
+      toast.success('Usage recorded')
+      setRecordOpen(false)
+      setRecordForm({ usageAmount: '', unit: '' })
+    },
+    onError: (err) => toast.error((err as Error).message ?? 'Record failed'),
+  })
+
+  function openDetail(q: ResourceQuota) {
+    setSelected(q)
+    setEditOpen(true)
+  }
+
+  function handleRecord(q?: ResourceQuota) {
+    if (q) setSelected(q)
+    setRecordOpen(true)
+  }
+
   return (
     <div className='space-y-6'>
       <PageHeader
         title='Resource Quotas & Usage'
         description='Monitor and manage resource allocation'
         actions={
-          <Button onClick={() => setCreateOpen(true)}>
-            <Plus className='mr-2 h-4 w-4' />
-            Add Quota
-          </Button>
+          <div className='flex gap-2'>
+            <Button variant='outline' size='sm' onClick={() => {
+              const rows = filtered.map(q => [q.resourceType, q.currentUsage, q.limitAmount, q.autoScale].join(','))
+              const csv = ['Resource,Usage,Limit,AutoScale', ...rows].join('\n')
+              const url = URL.createObjectURL(new Blob([csv], {type:'text/csv'}))
+              const a = document.createElement('a'); a.href=url; a.download='quotas.csv'; a.click(); URL.revokeObjectURL(url)
+            }}>CSV</Button>
+            <Button onClick={() => setCreateOpen(true)}>
+              <Plus className='mr-2 h-4 w-4' />
+              Add Quota
+            </Button>
+          </div>
         }
       />
 
@@ -321,8 +378,9 @@ export function ResourceQuotasPage() {
                   <TableHead>Usage</TableHead>
                   <TableHead>Limit</TableHead>
                   <TableHead>Utilization</TableHead>
-                  <TableHead>Auto-scale</TableHead>
-                </TableRow>
+                   <TableHead>Auto-scale</TableHead>
+                   <TableHead className='w-[140px]'>Actions</TableHead>
+                 </TableRow>
               </TableHeader>
               <TableBody>
                 {filtered.map((quota) => {
@@ -349,19 +407,100 @@ export function ResourceQuotasPage() {
                           <span className='text-xs font-medium w-10 text-right'>{pct}%</span>
                         </div>
                       </TableCell>
-                      <TableCell>
-                        <Badge variant={quota.autoScale ? 'default' : 'secondary'}>
-                          {quota.autoScale ? 'Enabled' : 'Disabled'}
-                        </Badge>
-                      </TableCell>
-                    </TableRow>
+                       <TableCell>
+                         <Badge variant={quota.autoScale ? 'default' : 'secondary'}>
+                           {quota.autoScale ? 'Enabled' : 'Disabled'}
+                         </Badge>
+                       </TableCell>
+                       <TableCell>
+                         <div className='flex gap-1'>
+                           <Button size='sm' variant='ghost' onClick={() => openDetail(quota)}>Edit</Button>
+                           <Button size='sm' variant='outline' onClick={() => handleRecord(quota)}>Record</Button>
+                         </div>
+                       </TableCell>
+                     </TableRow>
                   )
                 })}
               </TableBody>
             </Table>
           )}
-        </CardContent>
-      </Card>
-    </div>
-  )
-}
+         </CardContent>
+       </Card>
+
+      {/* Edit / Detail Dialog */}
+      <Dialog open={editOpen} onOpenChange={setEditOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Edit Quota: {selected?.resourceType}</DialogTitle>
+          </DialogHeader>
+          {selected && (
+            <div className='space-y-4 py-2'>
+              <div>
+                <div className='text-sm text-muted-foreground'>Current Limit</div>
+                <Input
+                  type='number'
+                  defaultValue={selected.limitAmount}
+                  onChange={(e) => setSelected({ ...selected, limitAmount: Number(e.target.value) })}
+                />
+              </div>
+              <div className='flex items-center gap-2'>
+                <input
+                  type='checkbox'
+                  checked={!!selected.autoScale}
+                  onChange={(e) => setSelected({ ...selected, autoScale: e.target.checked })}
+                />
+                <span>Auto Scale</span>
+              </div>
+              <div className='flex gap-2'>
+                <Button onClick={() => updateMutation.mutate({ id: selected.id, data: { limitAmount: selected.limitAmount, autoScale: selected.autoScale } })} disabled={updateMutation.isPending}>
+                  Save Changes
+                </Button>
+                <Button variant='outline' onClick={() => handleRecord(selected)}>Record Usage</Button>
+              </div>
+            </div>
+          )}
+        </DialogContent>
+      </Dialog>
+
+      {/* Record Usage Dialog */}
+      <Dialog open={recordOpen} onOpenChange={setRecordOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Record Usage for {selected?.resourceType}</DialogTitle>
+            <DialogDescription>Manually log consumption</DialogDescription>
+          </DialogHeader>
+          <div className='space-y-3'>
+            <Input
+              type='number'
+              placeholder='Usage amount'
+              value={recordForm.usageAmount}
+              onChange={(e) => setRecordForm({ ...recordForm, usageAmount: e.target.value })}
+            />
+            <Input
+              placeholder='Unit (e.g. MB, calls)'
+              value={recordForm.unit}
+              onChange={(e) => setRecordForm({ ...recordForm, unit: e.target.value })}
+            />
+          </div>
+          <DialogFooter>
+            <Button variant='outline' onClick={() => setRecordOpen(false)}>Cancel</Button>
+            <Button
+              onClick={() => {
+                if (!selected) return
+                const dto: RecordUsageMetricDto = {
+                  resourceType: selected.resourceType || '',
+                  usageAmount: Number(recordForm.usageAmount) || 0,
+                }
+                if (recordForm.unit) dto.unit = recordForm.unit
+                recordMutation.mutate(dto)
+              }}
+              disabled={recordMutation.isPending || !recordForm.usageAmount}
+            >
+              Record
+            </Button>
+          </DialogFooter>
+        </DialogContent>
+      </Dialog>
+     </div>
+   )
+ }

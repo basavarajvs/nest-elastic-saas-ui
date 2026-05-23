@@ -19,7 +19,7 @@ import { toast } from 'sonner'
 import { UserController_findAll } from '@/lib/api/wms-saas-core-api/users/users'
 import { UserController_deactivate } from '@/lib/api/wms-saas-core-api/users/users'
 import { UserController_reactivate } from '@/lib/api/wms-saas-core-api/users/users'
-import { UserController_assignRole } from '@/lib/api/wms-saas-core-api/users/users'
+import { UserController_assignRole, UserController_invite } from '@/lib/api/wms-saas-core-api/users/users'
 import { RoleController_findAll } from '@/lib/api/wms-saas-core-api/roles/roles'
 import { PageHeader, LoadingState, ErrorState, EmptyState } from '@/components/common'
 import { Badge } from '@/components/ui/badge'
@@ -37,6 +37,19 @@ import {
   SelectTrigger,
   SelectValue,
 } from '@/components/ui/select'
+import {
+  Sheet,
+  SheetContent,
+  SheetDescription,
+  SheetHeader,
+  SheetTitle,
+} from '@/components/ui/sheet'
+import {
+  Tabs,
+  TabsList,
+  TabsTrigger,
+} from '@/components/ui/tabs'
+import { Label } from '@/components/ui/label'
 import {
   Table,
   TableBody,
@@ -143,13 +156,19 @@ export function UsersPage() {
   const [debouncedSearch, setDebouncedSearch] = useState('')
   const [sortKey, setSortKey] = useState<string | null>(null)
   const [sortDir, setSortDir] = useState<'asc' | 'desc'>('asc')
+  const [activeTab, setActiveTab] = useState('all')
+  const [inviteSheetOpen, setInviteSheetOpen] = useState(false)
+  const [inviteEmail, setInviteEmail] = useState('')
+  const [inviteRole, setInviteRole] = useState('')
+  const [inviteMessage, setInviteMessage] = useState('')
+
   const limit = 10
 
   const { data, isLoading, isError, error, refetch } = useUsers(
     page,
     limit,
     debouncedSearch,
-    statusFilter,
+    activeTab === 'pending' ? 'invited' : statusFilter,
     roleFilter,
   )
   const roles = useRoles()
@@ -230,6 +249,25 @@ export function UsersPage() {
     onError: (err: Error) => toast.error(err.message ?? 'Failed to assign role'),
   })
 
+  const inviteMutation = useMutation({
+    mutationFn: async () => {
+      await UserController_invite({
+        email: inviteEmail,
+        roleId: inviteRole || undefined,
+        message: inviteMessage || undefined,
+      })
+    },
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ['users', 'list'] })
+      toast.success('Invitation sent successfully')
+      setInviteSheetOpen(false)
+      setInviteEmail('')
+      setInviteRole('')
+      setInviteMessage('')
+    },
+    onError: (err: Error) => toast.error(err.message ?? 'Failed to send invitation'),
+  })
+
   const handleSort = useCallback((key: string) => {
     setSortKey((prev) => {
       if (prev === key) {
@@ -268,14 +306,19 @@ export function UsersPage() {
         title='Users'
         description='Manage all users across the platform'
         actions={
-          <Button asChild>
-            <Link to='/users/new'>
-              <Plus className='mr-2 h-4 w-4' />
-              Create User
-            </Link>
+          <Button onClick={() => setInviteSheetOpen(true)}>
+            <Plus className='mr-2 h-4 w-4' />
+            Invite User
           </Button>
         }
       />
+
+      <Tabs value={activeTab} onValueChange={(v) => { setActiveTab(v); setPage(1); }}>
+        <TabsList>
+          <TabsTrigger value='all'>All Users</TabsTrigger>
+          <TabsTrigger value='pending'>Pending Invitations</TabsTrigger>
+        </TabsList>
+      </Tabs>
 
       <Card>
         <CardHeader className='pb-3'>
@@ -535,6 +578,62 @@ export function UsersPage() {
           </div>
         </DialogContent>
       </Dialog>
+
+      {/* Invite Sheet */}
+      <Sheet open={inviteSheetOpen} onOpenChange={setInviteSheetOpen}>
+        <SheetContent>
+          <SheetHeader>
+            <SheetTitle>Invite User</SheetTitle>
+            <SheetDescription>
+              Send an email invitation to a new user. They will receive a link to set up their account.
+            </SheetDescription>
+          </SheetHeader>
+          <div className='mt-6 space-y-4'>
+            <div className='space-y-2'>
+              <Label>Email Address</Label>
+              <Input
+                type='email'
+                placeholder='user@example.com'
+                value={inviteEmail}
+                onChange={(e) => setInviteEmail(e.target.value)}
+              />
+            </div>
+            <div className='space-y-2'>
+              <Label>Role (Optional)</Label>
+              <Select value={inviteRole} onValueChange={setInviteRole}>
+                <SelectTrigger>
+                  <SelectValue placeholder='Select a role' />
+                </SelectTrigger>
+                <SelectContent>
+                  <SelectItem value=' '>No Role</SelectItem>
+                  {roles.data?.map((r) => (
+                    <SelectItem key={r.id} value={r.id}>
+                      {r.name}
+                    </SelectItem>
+                  ))}
+                </SelectContent>
+              </Select>
+            </div>
+            <div className='space-y-2'>
+              <Label>Custom Message (Optional)</Label>
+              <Input
+                placeholder='Welcome to our platform!'
+                value={inviteMessage}
+                onChange={(e) => setInviteMessage(e.target.value)}
+              />
+            </div>
+            <div className='pt-4'>
+              <Button
+                className='w-full'
+                disabled={!inviteEmail || inviteMutation.isPending}
+                onClick={() => inviteMutation.mutate()}
+              >
+                {inviteMutation.isPending ? 'Sending...' : 'Send Invitation'}
+              </Button>
+            </div>
+          </div>
+        </SheetContent>
+      </Sheet>
     </div>
   )
 }
