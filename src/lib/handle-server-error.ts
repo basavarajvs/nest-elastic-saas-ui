@@ -1,4 +1,4 @@
-import { AxiosError } from 'axios'
+import { getErrorMessage } from '@/lib/utils/error-handler'
 import { toast } from 'sonner'
 
 export function handleServerError(error: unknown) {
@@ -7,23 +7,5 @@ export function handleServerError(error: unknown) {
     console.log(error)
   }
 
-  let errMsg = 'Something went wrong!'
-
-  if (
-    error &&
-    typeof error === 'object' &&
-    'status' in error &&
-    Number(error.status) === 204
-  ) {
-    errMsg = 'No content.'
-  }
-
-  if (error instanceof AxiosError) {
-    const title = error.response?.data?.title
-    if (typeof title === 'string' && title.length > 0) {
-      errMsg = title
-    }
-  }
-
-  toast.error(errMsg)
+  toast.error(getErrorMessage(error))
 }

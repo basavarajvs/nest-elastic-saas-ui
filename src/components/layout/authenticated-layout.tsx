@@ -3,9 +3,11 @@ import { getCookie } from '@/lib/cookies'
 import { cn } from '@/lib/utils'
 import { LayoutProvider } from '@/context/layout-provider'
 import { SearchProvider } from '@/context/search-provider'
+import { Header } from '@/components/layout/header'
 import { SidebarInset, SidebarProvider } from '@/components/ui/sidebar'
 import { AppSidebar } from '@/components/layout/app-sidebar'
 import { SkipToMain } from '@/components/skip-to-main'
+import { ErrorBoundary } from '@/components/common/error-boundary'
 
 type AuthenticatedLayoutProps = {
   children?: React.ReactNode
@@ -33,7 +35,12 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
               'peer-data-[variant=inset]:has-data-[layout=fixed]:h-[calc(100svh-(var(--spacing)*4))]'
             )}
           >
-            {children ?? <Outlet />}
+            <Header fixed />
+            <main className='flex-1 overflow-auto p-6'>
+              <ErrorBoundary>
+                {children ?? <Outlet />}
+              </ErrorBoundary>
+            </main>
           </SidebarInset>
         </SidebarProvider>
       </LayoutProvider>

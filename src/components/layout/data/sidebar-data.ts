@@ -1,203 +1,133 @@
 import {
-  Construction,
   LayoutDashboard,
-  Monitor,
-  Bug,
-  ListTodo,
-  FileX,
-  HelpCircle,
-  Lock,
-  Bell,
-  Package,
-  Palette,
-  ServerOff,
-  Settings,
-  Wrench,
-  UserCog,
-  UserX,
+  Building2,
   Users,
-  MessagesSquare,
+  Shield,
+  Group,
+  ScrollText,
+  CreditCard,
+  Banknote,
+  Key,
+  Webhook,
+  Puzzle,
+  Bell,
+  Mail,
+  ShieldAlert,
   ShieldCheck,
-  AudioWaveform,
-  Command,
-  GalleryVerticalEnd,
+  Gauge,
+  Settings,
+  Sliders,
+  FileText,
+  UserCog,
+  Wrench,
+  Palette,
+  Monitor,
 } from 'lucide-react'
-import { ClerkLogo } from '@/assets/clerk-logo'
 import { type SidebarData } from '../types'
 
 export const sidebarData: SidebarData = {
   user: {
-    name: 'satnaing',
-    email: 'satnaingdev@gmail.com',
+    name: 'Admin User',
+    email: 'admin@saas-core.com',
     avatar: '/avatars/shadcn.jpg',
   },
   teams: [
     {
-      name: 'Shadcn Admin',
-      logo: Command,
-      plan: 'Vite + ShadcnUI',
-    },
-    {
-      name: 'Acme Inc',
-      logo: GalleryVerticalEnd,
-      plan: 'Enterprise',
-    },
-    {
-      name: 'Acme Corp.',
-      logo: AudioWaveform,
-      plan: 'Startup',
+      name: 'SaaS Core',
+      logo: LayoutDashboard,
+      plan: 'System Admin',
     },
   ],
   navGroups: [
     {
-      title: 'General',
+      title: 'Overview',
       items: [
         {
           title: 'Dashboard',
           url: '/',
           icon: LayoutDashboard,
+          pattern: '^/$',
         },
+      ],
+    },
+    {
+      title: 'Platform',
+      items: [
         {
-          title: 'Tasks',
-          url: '/tasks',
-          icon: ListTodo,
-        },
-        {
-          title: 'Apps',
-          url: '/apps',
-          icon: Package,
-        },
-        {
-          title: 'Chats',
-          url: '/chats',
-          badge: '3',
-          icon: MessagesSquare,
+          title: 'Tenants',
+          icon: Building2,
+          pattern: '^/tenants',
+          items: [
+            { title: 'All Tenants', url: '/tenants', icon: Building2, pattern: '^/tenants$|^/tenants/' },
+            { title: 'Plans', url: '/tenants/plans', icon: CreditCard, pattern: '^/tenants/plans$' },
+          ],
         },
         {
           title: 'Users',
-          url: '/users',
           icon: Users,
-        },
-        {
-          title: 'Secured by Clerk',
-          icon: ClerkLogo,
+          pattern: '^/users|^/groups',
           items: [
-            {
-              title: 'Sign In',
-              url: '/clerk/sign-in',
-            },
-            {
-              title: 'Sign Up',
-              url: '/clerk/sign-up',
-            },
-            {
-              title: 'User Management',
-              url: '/clerk/user-management',
-            },
+            { title: 'All Users', url: '/users', icon: Users, pattern: '^/users$|^/users/' },
+            { title: 'Groups', url: '/groups', icon: Group, pattern: '^/groups$|^/groups/' },
           ],
         },
+        { title: 'Roles & Permissions', url: '/roles', icon: Shield, pattern: '^/roles(/|$)' },
+        { title: 'Audit Logs', url: '/audit', icon: ScrollText, pattern: '^/audit(/|$)' },
       ],
     },
     {
-      title: 'Pages',
+      title: 'Billing',
       items: [
-        {
-          title: 'Auth',
-          icon: ShieldCheck,
-          items: [
-            {
-              title: 'Sign In',
-              url: '/sign-in',
-            },
-            {
-              title: 'Sign In (2 Col)',
-              url: '/sign-in-2',
-            },
-            {
-              title: 'Sign Up',
-              url: '/sign-up',
-            },
-            {
-              title: 'Forgot Password',
-              url: '/forgot-password',
-            },
-            {
-              title: 'OTP',
-              url: '/otp',
-            },
-          ],
-        },
-        {
-          title: 'Errors',
-          icon: Bug,
-          items: [
-            {
-              title: 'Unauthorized',
-              url: '/errors/unauthorized',
-              icon: Lock,
-            },
-            {
-              title: 'Forbidden',
-              url: '/errors/forbidden',
-              icon: UserX,
-            },
-            {
-              title: 'Not Found',
-              url: '/errors/not-found',
-              icon: FileX,
-            },
-            {
-              title: 'Internal Server Error',
-              url: '/errors/internal-server-error',
-              icon: ServerOff,
-            },
-            {
-              title: 'Maintenance Error',
-              url: '/errors/maintenance-error',
-              icon: Construction,
-            },
-          ],
-        },
+        { title: 'License Plans', url: '/license-plans', icon: CreditCard, pattern: '^/license-plans(/|$)' },
+        { title: 'Subscriptions', url: '/subscriptions', icon: Banknote, pattern: '^/subscriptions(/|$)' },
+        { title: 'Payments', url: '/billing/payments', icon: Banknote, pattern: '^/billing/payments(/|$)' },
       ],
     },
     {
-      title: 'Other',
+      title: 'Integrations',
+      items: [
+        { title: 'API Keys', url: '/api-keys', icon: Key, pattern: '^/api-keys(/|$)' },
+        { title: 'Webhooks', url: '/webhooks', icon: Webhook, pattern: '^/webhooks(/|$)' },
+        { title: 'Integrations', url: '/integrations', icon: Puzzle, pattern: '^/integrations(/|$)' },
+      ],
+    },
+    {
+      title: 'Communication',
+      items: [
+        { title: 'Notifications', url: '/notifications', icon: Bell, pattern: '^/notifications(/|$)' },
+        { title: 'Templates', url: '/notification-templates', icon: Mail, pattern: '^/notification-templates(/|$)' },
+      ],
+    },
+    {
+      title: 'Security',
+      items: [
+        { title: 'Security Events', url: '/security', icon: ShieldAlert, pattern: '^/security(/|$)' },
+        { title: 'Compliance', url: '/compliance', icon: ShieldCheck, pattern: '^/compliance(/|$)' },
+        { title: 'Resource Quotas', url: '/quotas', icon: Gauge, pattern: '^/quotas(/|$)' },
+      ],
+    },
+    {
+      title: 'System',
+      items: [
+        { title: 'System Settings', url: '/system', icon: Settings, pattern: '^/system(/|$)' },
+        { title: 'Tenant Settings', url: '/tenant-settings', icon: Sliders, pattern: '^/tenant-settings(/|$)' },
+        { title: 'Reports', url: '/reports', icon: FileText, pattern: '^/reports(/|$)' },
+      ],
+    },
+    {
+      title: 'Settings',
       items: [
         {
-          title: 'Settings',
-          icon: Settings,
+          title: 'My Settings',
+          icon: UserCog,
+          pattern: '^/settings',
           items: [
-            {
-              title: 'Profile',
-              url: '/settings',
-              icon: UserCog,
-            },
-            {
-              title: 'Account',
-              url: '/settings/account',
-              icon: Wrench,
-            },
-            {
-              title: 'Appearance',
-              url: '/settings/appearance',
-              icon: Palette,
-            },
-            {
-              title: 'Notifications',
-              url: '/settings/notifications',
-              icon: Bell,
-            },
-            {
-              title: 'Display',
-              url: '/settings/display',
-              icon: Monitor,
-            },
+            { title: 'Profile', url: '/settings', icon: UserCog, pattern: '^/settings$' },
+            { title: 'Account', url: '/settings/account', icon: Wrench, pattern: '^/settings/account(/|$)' },
+            { title: 'Appearance', url: '/settings/appearance', icon: Palette, pattern: '^/settings/appearance(/|$)' },
+            { title: 'Notifications', url: '/settings/notifications', icon: Bell, pattern: '^/settings/notifications(/|$)' },
+            { title: 'Display', url: '/settings/display', icon: Monitor, pattern: '^/settings/display(/|$)' },
           ],
-        },
-        {
-          title: 'Help Center',
-          url: '/help-center',
-          icon: HelpCircle,
         },
       ],
     },

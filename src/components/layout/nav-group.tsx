@@ -33,14 +33,30 @@ import {
   type NavGroup as NavGroupProps,
 } from './types'
 
+function useUserRoles(): string[] {
+  // For now, return empty array meaning no role filtering is applied
+  // Later this will read from useAuth().user.roles
+  return []
+}
+
+function filterByRoles(item: NavItem, userRoles: string[]): boolean {
+  if (!item.roles || item.roles.length === 0) return true
+  if (userRoles.length === 0) return true
+  return item.roles.some((role) => userRoles.includes(role))
+}
+
 export function NavGroup({ title, items }: NavGroupProps) {
   const { state, isMobile } = useSidebar()
   const href = useLocation({ select: (location) => location.href })
+  const userRoles = useUserRoles()
+  const filteredItems = items.filter((item) => filterByRoles(item, userRoles))
+
+  if (filteredItems.length === 0) return null
   return (
     <SidebarGroup>
       <SidebarGroupLabel>{title}</SidebarGroupLabel>
       <SidebarMenu>
-        {items.map((item) => {
+        {filteredItems.map((item) => {
           const key = `${item.title}-${item.url}`
 
           if (!item.items)
@@ -89,6 +105,11 @@ function SidebarMenuCollapsible({
   href: string
 }) {
   const { setOpenMobile } = useSidebar()
+  const userRoles = useUserRoles()
+  const filteredChildren = item.items.filter((sub) => filterByRoles(sub, userRoles))
+
+  if (filteredChildren.length === 0) return null
+
   return (
     <Collapsible
       asChild
@@ -106,7 +127,7 @@ function SidebarMenuCollapsible({
         </CollapsibleTrigger>
         <CollapsibleContent className='CollapsibleContent'>
           <SidebarMenuSub>
-            {item.items.map((subItem) => (
+            {filteredChildren.map((subItem) => (
               <SidebarMenuSubItem key={subItem.title}>
                 <SidebarMenuSubButton
                   asChild
@@ -174,6 +195,9 @@ function SidebarMenuCollapsedDropdown({
 }
 
 function checkIsActive(href: string, item: NavItem, mainNav = false) {
+  if (item.pattern) {
+    return new RegExp(item.pattern).test(href.split('?')[0])
+  }
   return (
     href === item.url || // /endpint?search=param
     href.split('?')[0] === item.url || // endpoint

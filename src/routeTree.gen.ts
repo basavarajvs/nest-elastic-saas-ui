@@ -9,7 +9,9 @@
 // Additionally, you should also exclude this file from your linter and/or formatter to prevent it from being checked or modified.
 
 import { Route as rootRouteImport } from './routes/__root'
-import { Route as ClerkRouteRouteImport } from './routes/clerk/route'
+import { Route as VerifyEmailRouteImport } from './routes/verify-email'
+import { Route as ResetPasswordRouteImport } from './routes/reset-password'
+import { Route as MfaRouteImport } from './routes/mfa'
 import { Route as AuthenticatedRouteRouteImport } from './routes/_authenticated/route'
 import { Route as AuthenticatedIndexRouteImport } from './routes/_authenticated/index'
 import { Route as errors503RouteImport } from './routes/(errors)/503'
@@ -22,27 +24,80 @@ import { Route as authSignIn2RouteImport } from './routes/(auth)/sign-in-2'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
 import { Route as authOtpRouteImport } from './routes/(auth)/otp'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
-import { Route as ClerkAuthenticatedRouteRouteImport } from './routes/clerk/_authenticated/route'
-import { Route as ClerkauthRouteRouteImport } from './routes/clerk/(auth)/route'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
+import { Route as AuthenticatedWebhooksIndexRouteImport } from './routes/_authenticated/webhooks/index'
 import { Route as AuthenticatedUsersIndexRouteImport } from './routes/_authenticated/users/index'
-import { Route as AuthenticatedTasksIndexRouteImport } from './routes/_authenticated/tasks/index'
+import { Route as AuthenticatedTenantsIndexRouteImport } from './routes/_authenticated/tenants/index'
+import { Route as AuthenticatedTenantSettingsIndexRouteImport } from './routes/_authenticated/tenant-settings/index'
+import { Route as AuthenticatedSystemIndexRouteImport } from './routes/_authenticated/system/index'
+import { Route as AuthenticatedSubscriptionsIndexRouteImport } from './routes/_authenticated/subscriptions/index'
 import { Route as AuthenticatedSettingsIndexRouteImport } from './routes/_authenticated/settings/index'
-import { Route as AuthenticatedHelpCenterIndexRouteImport } from './routes/_authenticated/help-center/index'
-import { Route as AuthenticatedChatsIndexRouteImport } from './routes/_authenticated/chats/index'
-import { Route as AuthenticatedAppsIndexRouteImport } from './routes/_authenticated/apps/index'
-import { Route as ClerkAuthenticatedUserManagementRouteImport } from './routes/clerk/_authenticated/user-management'
-import { Route as ClerkauthSignUpRouteImport } from './routes/clerk/(auth)/sign-up'
-import { Route as ClerkauthSignInRouteImport } from './routes/clerk/(auth)/sign-in'
+import { Route as AuthenticatedSecurityIndexRouteImport } from './routes/_authenticated/security/index'
+import { Route as AuthenticatedRolesIndexRouteImport } from './routes/_authenticated/roles/index'
+import { Route as AuthenticatedReportsIndexRouteImport } from './routes/_authenticated/reports/index'
+import { Route as AuthenticatedQuotasIndexRouteImport } from './routes/_authenticated/quotas/index'
+import { Route as AuthenticatedProfileIndexRouteImport } from './routes/_authenticated/profile/index'
+import { Route as AuthenticatedNotificationsIndexRouteImport } from './routes/_authenticated/notifications/index'
+import { Route as AuthenticatedNotificationTemplatesIndexRouteImport } from './routes/_authenticated/notification-templates/index'
+import { Route as AuthenticatedLicensePlansIndexRouteImport } from './routes/_authenticated/license-plans/index'
+import { Route as AuthenticatedIntegrationsIndexRouteImport } from './routes/_authenticated/integrations/index'
+import { Route as AuthenticatedGroupsIndexRouteImport } from './routes/_authenticated/groups/index'
+import { Route as AuthenticatedComplianceIndexRouteImport } from './routes/_authenticated/compliance/index'
+import { Route as AuthenticatedAuditIndexRouteImport } from './routes/_authenticated/audit/index'
+import { Route as AuthenticatedApiKeysIndexRouteImport } from './routes/_authenticated/api-keys/index'
+import { Route as AuthenticatedWebhooksNewRouteImport } from './routes/_authenticated/webhooks/new'
+import { Route as AuthenticatedWebhooksIdRouteImport } from './routes/_authenticated/webhooks/$id'
+import { Route as AuthenticatedUsersNewRouteImport } from './routes/_authenticated/users/new'
+import { Route as AuthenticatedUsersIdRouteImport } from './routes/_authenticated/users/$id'
+import { Route as AuthenticatedTenantsPlansRouteImport } from './routes/_authenticated/tenants/plans'
+import { Route as AuthenticatedTenantsNewRouteImport } from './routes/_authenticated/tenants/new'
+import { Route as AuthenticatedTenantsIdRouteImport } from './routes/_authenticated/tenants/$id'
+import { Route as AuthenticatedSubscriptionsNewRouteImport } from './routes/_authenticated/subscriptions/new'
+import { Route as AuthenticatedSubscriptionsIdRouteImport } from './routes/_authenticated/subscriptions/$id'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
 import { Route as AuthenticatedSettingsDisplayRouteImport } from './routes/_authenticated/settings/display'
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
+import { Route as AuthenticatedRolesNewRouteImport } from './routes/_authenticated/roles/new'
+import { Route as AuthenticatedRolesIdRouteImport } from './routes/_authenticated/roles/$id'
+import { Route as AuthenticatedReportsNewRouteImport } from './routes/_authenticated/reports/new'
+import { Route as AuthenticatedReportsIdRouteImport } from './routes/_authenticated/reports/$id'
+import { Route as AuthenticatedProfileSettingsRouteImport } from './routes/_authenticated/profile/settings'
+import { Route as AuthenticatedProfileSecurityRouteImport } from './routes/_authenticated/profile/security'
+import { Route as AuthenticatedProfileNotificationsRouteImport } from './routes/_authenticated/profile/notifications'
+import { Route as AuthenticatedProfileEditRouteImport } from './routes/_authenticated/profile/edit'
+import { Route as AuthenticatedNotificationsBroadcastRouteImport } from './routes/_authenticated/notifications/broadcast'
+import { Route as AuthenticatedNotificationTemplatesNewRouteImport } from './routes/_authenticated/notification-templates/new'
+import { Route as AuthenticatedNotificationTemplatesIdRouteImport } from './routes/_authenticated/notification-templates/$id'
+import { Route as AuthenticatedLicensePlansNewRouteImport } from './routes/_authenticated/license-plans/new'
+import { Route as AuthenticatedLicensePlansIdRouteImport } from './routes/_authenticated/license-plans/$id'
+import { Route as AuthenticatedIntegrationsNewRouteImport } from './routes/_authenticated/integrations/new'
+import { Route as AuthenticatedIntegrationsIdRouteImport } from './routes/_authenticated/integrations/$id'
+import { Route as AuthenticatedGroupsNewRouteImport } from './routes/_authenticated/groups/new'
+import { Route as AuthenticatedGroupsIdRouteImport } from './routes/_authenticated/groups/$id'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
+import { Route as AuthenticatedBillingPaymentsRouteImport } from './routes/_authenticated/billing/payments'
+import { Route as AuthenticatedApiKeysNewRouteImport } from './routes/_authenticated/api-keys/new'
+import { Route as AuthenticatedApiKeysIdRouteImport } from './routes/_authenticated/api-keys/$id'
+import { Route as AuthenticatedComplianceRetentionPoliciesIndexRouteImport } from './routes/_authenticated/compliance/retention-policies/index'
+import { Route as AuthenticatedComplianceRetentionPoliciesNewRouteImport } from './routes/_authenticated/compliance/retention-policies/new'
+import { Route as AuthenticatedComplianceRetentionPoliciesIdRouteImport } from './routes/_authenticated/compliance/retention-policies/$id'
+import { Route as AuthenticatedCompliancePoliciesNewRouteImport } from './routes/_authenticated/compliance/policies/new'
+import { Route as AuthenticatedCompliancePoliciesIdRouteImport } from './routes/_authenticated/compliance/policies/$id'
 
-const ClerkRouteRoute = ClerkRouteRouteImport.update({
-  id: '/clerk',
-  path: '/clerk',
+const VerifyEmailRoute = VerifyEmailRouteImport.update({
+  id: '/verify-email',
+  path: '/verify-email',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const ResetPasswordRoute = ResetPasswordRouteImport.update({
+  id: '/reset-password',
+  path: '/reset-password',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const MfaRoute = MfaRouteImport.update({
+  id: '/mfa',
+  path: '/mfa',
   getParentRoute: () => rootRouteImport,
 } as any)
 const AuthenticatedRouteRoute = AuthenticatedRouteRouteImport.update({
@@ -104,18 +159,16 @@ const authForgotPasswordRoute = authForgotPasswordRouteImport.update({
   path: '/forgot-password',
   getParentRoute: () => rootRouteImport,
 } as any)
-const ClerkAuthenticatedRouteRoute = ClerkAuthenticatedRouteRouteImport.update({
-  id: '/_authenticated',
-  getParentRoute: () => ClerkRouteRoute,
-} as any)
-const ClerkauthRouteRoute = ClerkauthRouteRouteImport.update({
-  id: '/(auth)',
-  getParentRoute: () => ClerkRouteRoute,
-} as any)
 const AuthenticatedSettingsRouteRoute =
   AuthenticatedSettingsRouteRouteImport.update({
     id: '/settings',
     path: '/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWebhooksIndexRoute =
+  AuthenticatedWebhooksIndexRouteImport.update({
+    id: '/webhooks/',
+    path: '/webhooks/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
@@ -123,49 +176,161 @@ const AuthenticatedUsersIndexRoute = AuthenticatedUsersIndexRouteImport.update({
   path: '/users/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedTasksIndexRoute = AuthenticatedTasksIndexRouteImport.update({
-  id: '/tasks/',
-  path: '/tasks/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
+const AuthenticatedTenantsIndexRoute =
+  AuthenticatedTenantsIndexRouteImport.update({
+    id: '/tenants/',
+    path: '/tenants/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTenantSettingsIndexRoute =
+  AuthenticatedTenantSettingsIndexRouteImport.update({
+    id: '/tenant-settings/',
+    path: '/tenant-settings/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSystemIndexRoute =
+  AuthenticatedSystemIndexRouteImport.update({
+    id: '/system/',
+    path: '/system/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSubscriptionsIndexRoute =
+  AuthenticatedSubscriptionsIndexRouteImport.update({
+    id: '/subscriptions/',
+    path: '/subscriptions/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsIndexRoute =
   AuthenticatedSettingsIndexRouteImport.update({
     id: '/',
     path: '/',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
-const AuthenticatedHelpCenterIndexRoute =
-  AuthenticatedHelpCenterIndexRouteImport.update({
-    id: '/help-center/',
-    path: '/help-center/',
+const AuthenticatedSecurityIndexRoute =
+  AuthenticatedSecurityIndexRouteImport.update({
+    id: '/security/',
+    path: '/security/',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const AuthenticatedChatsIndexRoute = AuthenticatedChatsIndexRouteImport.update({
-  id: '/chats/',
-  path: '/chats/',
+const AuthenticatedRolesIndexRoute = AuthenticatedRolesIndexRouteImport.update({
+  id: '/roles/',
+  path: '/roles/',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const AuthenticatedAppsIndexRoute = AuthenticatedAppsIndexRouteImport.update({
-  id: '/apps/',
-  path: '/apps/',
-  getParentRoute: () => AuthenticatedRouteRoute,
-} as any)
-const ClerkAuthenticatedUserManagementRoute =
-  ClerkAuthenticatedUserManagementRouteImport.update({
-    id: '/user-management',
-    path: '/user-management',
-    getParentRoute: () => ClerkAuthenticatedRouteRoute,
+const AuthenticatedReportsIndexRoute =
+  AuthenticatedReportsIndexRouteImport.update({
+    id: '/reports/',
+    path: '/reports/',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
-const ClerkauthSignUpRoute = ClerkauthSignUpRouteImport.update({
-  id: '/sign-up',
-  path: '/sign-up',
-  getParentRoute: () => ClerkauthRouteRoute,
+const AuthenticatedQuotasIndexRoute =
+  AuthenticatedQuotasIndexRouteImport.update({
+    id: '/quotas/',
+    path: '/quotas/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedProfileIndexRoute =
+  AuthenticatedProfileIndexRouteImport.update({
+    id: '/profile/',
+    path: '/profile/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNotificationsIndexRoute =
+  AuthenticatedNotificationsIndexRouteImport.update({
+    id: '/notifications/',
+    path: '/notifications/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNotificationTemplatesIndexRoute =
+  AuthenticatedNotificationTemplatesIndexRouteImport.update({
+    id: '/notification-templates/',
+    path: '/notification-templates/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLicensePlansIndexRoute =
+  AuthenticatedLicensePlansIndexRouteImport.update({
+    id: '/license-plans/',
+    path: '/license-plans/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedIntegrationsIndexRoute =
+  AuthenticatedIntegrationsIndexRouteImport.update({
+    id: '/integrations/',
+    path: '/integrations/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedGroupsIndexRoute =
+  AuthenticatedGroupsIndexRouteImport.update({
+    id: '/groups/',
+    path: '/groups/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedComplianceIndexRoute =
+  AuthenticatedComplianceIndexRouteImport.update({
+    id: '/compliance/',
+    path: '/compliance/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedAuditIndexRoute = AuthenticatedAuditIndexRouteImport.update({
+  id: '/audit/',
+  path: '/audit/',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
-const ClerkauthSignInRoute = ClerkauthSignInRouteImport.update({
-  id: '/sign-in',
-  path: '/sign-in',
-  getParentRoute: () => ClerkauthRouteRoute,
+const AuthenticatedApiKeysIndexRoute =
+  AuthenticatedApiKeysIndexRouteImport.update({
+    id: '/api-keys/',
+    path: '/api-keys/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWebhooksNewRoute =
+  AuthenticatedWebhooksNewRouteImport.update({
+    id: '/webhooks/new',
+    path: '/webhooks/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedWebhooksIdRoute = AuthenticatedWebhooksIdRouteImport.update({
+  id: '/webhooks/$id',
+  path: '/webhooks/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedUsersNewRoute = AuthenticatedUsersNewRouteImport.update({
+  id: '/users/new',
+  path: '/users/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedUsersIdRoute = AuthenticatedUsersIdRouteImport.update({
+  id: '/users/$id',
+  path: '/users/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTenantsPlansRoute =
+  AuthenticatedTenantsPlansRouteImport.update({
+    id: '/tenants/plans',
+    path: '/tenants/plans',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedTenantsNewRoute = AuthenticatedTenantsNewRouteImport.update({
+  id: '/tenants/new',
+  path: '/tenants/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedTenantsIdRoute = AuthenticatedTenantsIdRouteImport.update({
+  id: '/tenants/$id',
+  path: '/tenants/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSubscriptionsNewRoute =
+  AuthenticatedSubscriptionsNewRouteImport.update({
+    id: '/subscriptions/new',
+    path: '/subscriptions/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSubscriptionsIdRoute =
+  AuthenticatedSubscriptionsIdRouteImport.update({
+    id: '/subscriptions/$id',
+    path: '/subscriptions/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSettingsNotificationsRoute =
   AuthenticatedSettingsNotificationsRouteImport.update({
     id: '/notifications',
@@ -190,16 +355,160 @@ const AuthenticatedSettingsAccountRoute =
     path: '/account',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
   } as any)
+const AuthenticatedRolesNewRoute = AuthenticatedRolesNewRouteImport.update({
+  id: '/roles/new',
+  path: '/roles/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedRolesIdRoute = AuthenticatedRolesIdRouteImport.update({
+  id: '/roles/$id',
+  path: '/roles/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReportsNewRoute = AuthenticatedReportsNewRouteImport.update({
+  id: '/reports/new',
+  path: '/reports/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedReportsIdRoute = AuthenticatedReportsIdRouteImport.update({
+  id: '/reports/$id',
+  path: '/reports/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedProfileSettingsRoute =
+  AuthenticatedProfileSettingsRouteImport.update({
+    id: '/profile/settings',
+    path: '/profile/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedProfileSecurityRoute =
+  AuthenticatedProfileSecurityRouteImport.update({
+    id: '/profile/security',
+    path: '/profile/security',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedProfileNotificationsRoute =
+  AuthenticatedProfileNotificationsRouteImport.update({
+    id: '/profile/notifications',
+    path: '/profile/notifications',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedProfileEditRoute =
+  AuthenticatedProfileEditRouteImport.update({
+    id: '/profile/edit',
+    path: '/profile/edit',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNotificationsBroadcastRoute =
+  AuthenticatedNotificationsBroadcastRouteImport.update({
+    id: '/notifications/broadcast',
+    path: '/notifications/broadcast',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNotificationTemplatesNewRoute =
+  AuthenticatedNotificationTemplatesNewRouteImport.update({
+    id: '/notification-templates/new',
+    path: '/notification-templates/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedNotificationTemplatesIdRoute =
+  AuthenticatedNotificationTemplatesIdRouteImport.update({
+    id: '/notification-templates/$id',
+    path: '/notification-templates/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLicensePlansNewRoute =
+  AuthenticatedLicensePlansNewRouteImport.update({
+    id: '/license-plans/new',
+    path: '/license-plans/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedLicensePlansIdRoute =
+  AuthenticatedLicensePlansIdRouteImport.update({
+    id: '/license-plans/$id',
+    path: '/license-plans/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedIntegrationsNewRoute =
+  AuthenticatedIntegrationsNewRouteImport.update({
+    id: '/integrations/new',
+    path: '/integrations/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedIntegrationsIdRoute =
+  AuthenticatedIntegrationsIdRouteImport.update({
+    id: '/integrations/$id',
+    path: '/integrations/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedGroupsNewRoute = AuthenticatedGroupsNewRouteImport.update({
+  id: '/groups/new',
+  path: '/groups/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedGroupsIdRoute = AuthenticatedGroupsIdRouteImport.update({
+  id: '/groups/$id',
+  path: '/groups/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
 const AuthenticatedErrorsErrorRoute =
   AuthenticatedErrorsErrorRouteImport.update({
     id: '/errors/$error',
     path: '/errors/$error',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedBillingPaymentsRoute =
+  AuthenticatedBillingPaymentsRouteImport.update({
+    id: '/billing/payments',
+    path: '/billing/payments',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedApiKeysNewRoute = AuthenticatedApiKeysNewRouteImport.update({
+  id: '/api-keys/new',
+  path: '/api-keys/new',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedApiKeysIdRoute = AuthenticatedApiKeysIdRouteImport.update({
+  id: '/api-keys/$id',
+  path: '/api-keys/$id',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedComplianceRetentionPoliciesIndexRoute =
+  AuthenticatedComplianceRetentionPoliciesIndexRouteImport.update({
+    id: '/compliance/retention-policies/',
+    path: '/compliance/retention-policies/',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedComplianceRetentionPoliciesNewRoute =
+  AuthenticatedComplianceRetentionPoliciesNewRouteImport.update({
+    id: '/compliance/retention-policies/new',
+    path: '/compliance/retention-policies/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedComplianceRetentionPoliciesIdRoute =
+  AuthenticatedComplianceRetentionPoliciesIdRouteImport.update({
+    id: '/compliance/retention-policies/$id',
+    path: '/compliance/retention-policies/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCompliancePoliciesNewRoute =
+  AuthenticatedCompliancePoliciesNewRouteImport.update({
+    id: '/compliance/policies/new',
+    path: '/compliance/policies/new',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedCompliancePoliciesIdRoute =
+  AuthenticatedCompliancePoliciesIdRouteImport.update({
+    id: '/compliance/policies/$id',
+    path: '/compliance/policies/$id',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
-  '/clerk': typeof ClerkAuthenticatedRouteRouteWithChildren
+  '/mfa': typeof MfaRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
   '/otp': typeof authOtpRoute
@@ -211,23 +520,70 @@ export interface FileRoutesByFullPath {
   '/404': typeof errors404Route
   '/500': typeof errors500Route
   '/503': typeof errors503Route
+  '/api-keys/$id': typeof AuthenticatedApiKeysIdRoute
+  '/api-keys/new': typeof AuthenticatedApiKeysNewRoute
+  '/billing/payments': typeof AuthenticatedBillingPaymentsRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/groups/$id': typeof AuthenticatedGroupsIdRoute
+  '/groups/new': typeof AuthenticatedGroupsNewRoute
+  '/integrations/$id': typeof AuthenticatedIntegrationsIdRoute
+  '/integrations/new': typeof AuthenticatedIntegrationsNewRoute
+  '/license-plans/$id': typeof AuthenticatedLicensePlansIdRoute
+  '/license-plans/new': typeof AuthenticatedLicensePlansNewRoute
+  '/notification-templates/$id': typeof AuthenticatedNotificationTemplatesIdRoute
+  '/notification-templates/new': typeof AuthenticatedNotificationTemplatesNewRoute
+  '/notifications/broadcast': typeof AuthenticatedNotificationsBroadcastRoute
+  '/profile/edit': typeof AuthenticatedProfileEditRoute
+  '/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
+  '/profile/security': typeof AuthenticatedProfileSecurityRoute
+  '/profile/settings': typeof AuthenticatedProfileSettingsRoute
+  '/reports/$id': typeof AuthenticatedReportsIdRoute
+  '/reports/new': typeof AuthenticatedReportsNewRoute
+  '/roles/$id': typeof AuthenticatedRolesIdRoute
+  '/roles/new': typeof AuthenticatedRolesNewRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
-  '/clerk/sign-in': typeof ClerkauthSignInRoute
-  '/clerk/sign-up': typeof ClerkauthSignUpRoute
-  '/clerk/user-management': typeof ClerkAuthenticatedUserManagementRoute
-  '/apps/': typeof AuthenticatedAppsIndexRoute
-  '/chats/': typeof AuthenticatedChatsIndexRoute
-  '/help-center/': typeof AuthenticatedHelpCenterIndexRoute
+  '/subscriptions/$id': typeof AuthenticatedSubscriptionsIdRoute
+  '/subscriptions/new': typeof AuthenticatedSubscriptionsNewRoute
+  '/tenants/$id': typeof AuthenticatedTenantsIdRoute
+  '/tenants/new': typeof AuthenticatedTenantsNewRoute
+  '/tenants/plans': typeof AuthenticatedTenantsPlansRoute
+  '/users/$id': typeof AuthenticatedUsersIdRoute
+  '/users/new': typeof AuthenticatedUsersNewRoute
+  '/webhooks/$id': typeof AuthenticatedWebhooksIdRoute
+  '/webhooks/new': typeof AuthenticatedWebhooksNewRoute
+  '/api-keys/': typeof AuthenticatedApiKeysIndexRoute
+  '/audit/': typeof AuthenticatedAuditIndexRoute
+  '/compliance/': typeof AuthenticatedComplianceIndexRoute
+  '/groups/': typeof AuthenticatedGroupsIndexRoute
+  '/integrations/': typeof AuthenticatedIntegrationsIndexRoute
+  '/license-plans/': typeof AuthenticatedLicensePlansIndexRoute
+  '/notification-templates/': typeof AuthenticatedNotificationTemplatesIndexRoute
+  '/notifications/': typeof AuthenticatedNotificationsIndexRoute
+  '/profile/': typeof AuthenticatedProfileIndexRoute
+  '/quotas/': typeof AuthenticatedQuotasIndexRoute
+  '/reports/': typeof AuthenticatedReportsIndexRoute
+  '/roles/': typeof AuthenticatedRolesIndexRoute
+  '/security/': typeof AuthenticatedSecurityIndexRoute
   '/settings/': typeof AuthenticatedSettingsIndexRoute
-  '/tasks/': typeof AuthenticatedTasksIndexRoute
+  '/subscriptions/': typeof AuthenticatedSubscriptionsIndexRoute
+  '/system/': typeof AuthenticatedSystemIndexRoute
+  '/tenant-settings/': typeof AuthenticatedTenantSettingsIndexRoute
+  '/tenants/': typeof AuthenticatedTenantsIndexRoute
   '/users/': typeof AuthenticatedUsersIndexRoute
+  '/webhooks/': typeof AuthenticatedWebhooksIndexRoute
+  '/compliance/policies/$id': typeof AuthenticatedCompliancePoliciesIdRoute
+  '/compliance/policies/new': typeof AuthenticatedCompliancePoliciesNewRoute
+  '/compliance/retention-policies/$id': typeof AuthenticatedComplianceRetentionPoliciesIdRoute
+  '/compliance/retention-policies/new': typeof AuthenticatedComplianceRetentionPoliciesNewRoute
+  '/compliance/retention-policies/': typeof AuthenticatedComplianceRetentionPoliciesIndexRoute
 }
 export interface FileRoutesByTo {
-  '/clerk': typeof ClerkAuthenticatedRouteRouteWithChildren
+  '/mfa': typeof MfaRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/forgot-password': typeof authForgotPasswordRoute
   '/otp': typeof authOtpRoute
   '/sign-in': typeof authSignInRoute
@@ -239,28 +595,73 @@ export interface FileRoutesByTo {
   '/500': typeof errors500Route
   '/503': typeof errors503Route
   '/': typeof AuthenticatedIndexRoute
+  '/api-keys/$id': typeof AuthenticatedApiKeysIdRoute
+  '/api-keys/new': typeof AuthenticatedApiKeysNewRoute
+  '/billing/payments': typeof AuthenticatedBillingPaymentsRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/groups/$id': typeof AuthenticatedGroupsIdRoute
+  '/groups/new': typeof AuthenticatedGroupsNewRoute
+  '/integrations/$id': typeof AuthenticatedIntegrationsIdRoute
+  '/integrations/new': typeof AuthenticatedIntegrationsNewRoute
+  '/license-plans/$id': typeof AuthenticatedLicensePlansIdRoute
+  '/license-plans/new': typeof AuthenticatedLicensePlansNewRoute
+  '/notification-templates/$id': typeof AuthenticatedNotificationTemplatesIdRoute
+  '/notification-templates/new': typeof AuthenticatedNotificationTemplatesNewRoute
+  '/notifications/broadcast': typeof AuthenticatedNotificationsBroadcastRoute
+  '/profile/edit': typeof AuthenticatedProfileEditRoute
+  '/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
+  '/profile/security': typeof AuthenticatedProfileSecurityRoute
+  '/profile/settings': typeof AuthenticatedProfileSettingsRoute
+  '/reports/$id': typeof AuthenticatedReportsIdRoute
+  '/reports/new': typeof AuthenticatedReportsNewRoute
+  '/roles/$id': typeof AuthenticatedRolesIdRoute
+  '/roles/new': typeof AuthenticatedRolesNewRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
-  '/clerk/sign-in': typeof ClerkauthSignInRoute
-  '/clerk/sign-up': typeof ClerkauthSignUpRoute
-  '/clerk/user-management': typeof ClerkAuthenticatedUserManagementRoute
-  '/apps': typeof AuthenticatedAppsIndexRoute
-  '/chats': typeof AuthenticatedChatsIndexRoute
-  '/help-center': typeof AuthenticatedHelpCenterIndexRoute
+  '/subscriptions/$id': typeof AuthenticatedSubscriptionsIdRoute
+  '/subscriptions/new': typeof AuthenticatedSubscriptionsNewRoute
+  '/tenants/$id': typeof AuthenticatedTenantsIdRoute
+  '/tenants/new': typeof AuthenticatedTenantsNewRoute
+  '/tenants/plans': typeof AuthenticatedTenantsPlansRoute
+  '/users/$id': typeof AuthenticatedUsersIdRoute
+  '/users/new': typeof AuthenticatedUsersNewRoute
+  '/webhooks/$id': typeof AuthenticatedWebhooksIdRoute
+  '/webhooks/new': typeof AuthenticatedWebhooksNewRoute
+  '/api-keys': typeof AuthenticatedApiKeysIndexRoute
+  '/audit': typeof AuthenticatedAuditIndexRoute
+  '/compliance': typeof AuthenticatedComplianceIndexRoute
+  '/groups': typeof AuthenticatedGroupsIndexRoute
+  '/integrations': typeof AuthenticatedIntegrationsIndexRoute
+  '/license-plans': typeof AuthenticatedLicensePlansIndexRoute
+  '/notification-templates': typeof AuthenticatedNotificationTemplatesIndexRoute
+  '/notifications': typeof AuthenticatedNotificationsIndexRoute
+  '/profile': typeof AuthenticatedProfileIndexRoute
+  '/quotas': typeof AuthenticatedQuotasIndexRoute
+  '/reports': typeof AuthenticatedReportsIndexRoute
+  '/roles': typeof AuthenticatedRolesIndexRoute
+  '/security': typeof AuthenticatedSecurityIndexRoute
   '/settings': typeof AuthenticatedSettingsIndexRoute
-  '/tasks': typeof AuthenticatedTasksIndexRoute
+  '/subscriptions': typeof AuthenticatedSubscriptionsIndexRoute
+  '/system': typeof AuthenticatedSystemIndexRoute
+  '/tenant-settings': typeof AuthenticatedTenantSettingsIndexRoute
+  '/tenants': typeof AuthenticatedTenantsIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
+  '/webhooks': typeof AuthenticatedWebhooksIndexRoute
+  '/compliance/policies/$id': typeof AuthenticatedCompliancePoliciesIdRoute
+  '/compliance/policies/new': typeof AuthenticatedCompliancePoliciesNewRoute
+  '/compliance/retention-policies/$id': typeof AuthenticatedComplianceRetentionPoliciesIdRoute
+  '/compliance/retention-policies/new': typeof AuthenticatedComplianceRetentionPoliciesNewRoute
+  '/compliance/retention-policies': typeof AuthenticatedComplianceRetentionPoliciesIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_authenticated': typeof AuthenticatedRouteRouteWithChildren
-  '/clerk': typeof ClerkRouteRouteWithChildren
+  '/mfa': typeof MfaRoute
+  '/reset-password': typeof ResetPasswordRoute
+  '/verify-email': typeof VerifyEmailRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
-  '/clerk/(auth)': typeof ClerkauthRouteRouteWithChildren
-  '/clerk/_authenticated': typeof ClerkAuthenticatedRouteRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
   '/(auth)/otp': typeof authOtpRoute
   '/(auth)/sign-in': typeof authSignInRoute
@@ -272,26 +673,73 @@ export interface FileRoutesById {
   '/(errors)/500': typeof errors500Route
   '/(errors)/503': typeof errors503Route
   '/_authenticated/': typeof AuthenticatedIndexRoute
+  '/_authenticated/api-keys/$id': typeof AuthenticatedApiKeysIdRoute
+  '/_authenticated/api-keys/new': typeof AuthenticatedApiKeysNewRoute
+  '/_authenticated/billing/payments': typeof AuthenticatedBillingPaymentsRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
+  '/_authenticated/groups/$id': typeof AuthenticatedGroupsIdRoute
+  '/_authenticated/groups/new': typeof AuthenticatedGroupsNewRoute
+  '/_authenticated/integrations/$id': typeof AuthenticatedIntegrationsIdRoute
+  '/_authenticated/integrations/new': typeof AuthenticatedIntegrationsNewRoute
+  '/_authenticated/license-plans/$id': typeof AuthenticatedLicensePlansIdRoute
+  '/_authenticated/license-plans/new': typeof AuthenticatedLicensePlansNewRoute
+  '/_authenticated/notification-templates/$id': typeof AuthenticatedNotificationTemplatesIdRoute
+  '/_authenticated/notification-templates/new': typeof AuthenticatedNotificationTemplatesNewRoute
+  '/_authenticated/notifications/broadcast': typeof AuthenticatedNotificationsBroadcastRoute
+  '/_authenticated/profile/edit': typeof AuthenticatedProfileEditRoute
+  '/_authenticated/profile/notifications': typeof AuthenticatedProfileNotificationsRoute
+  '/_authenticated/profile/security': typeof AuthenticatedProfileSecurityRoute
+  '/_authenticated/profile/settings': typeof AuthenticatedProfileSettingsRoute
+  '/_authenticated/reports/$id': typeof AuthenticatedReportsIdRoute
+  '/_authenticated/reports/new': typeof AuthenticatedReportsNewRoute
+  '/_authenticated/roles/$id': typeof AuthenticatedRolesIdRoute
+  '/_authenticated/roles/new': typeof AuthenticatedRolesNewRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
-  '/clerk/(auth)/sign-in': typeof ClerkauthSignInRoute
-  '/clerk/(auth)/sign-up': typeof ClerkauthSignUpRoute
-  '/clerk/_authenticated/user-management': typeof ClerkAuthenticatedUserManagementRoute
-  '/_authenticated/apps/': typeof AuthenticatedAppsIndexRoute
-  '/_authenticated/chats/': typeof AuthenticatedChatsIndexRoute
-  '/_authenticated/help-center/': typeof AuthenticatedHelpCenterIndexRoute
+  '/_authenticated/subscriptions/$id': typeof AuthenticatedSubscriptionsIdRoute
+  '/_authenticated/subscriptions/new': typeof AuthenticatedSubscriptionsNewRoute
+  '/_authenticated/tenants/$id': typeof AuthenticatedTenantsIdRoute
+  '/_authenticated/tenants/new': typeof AuthenticatedTenantsNewRoute
+  '/_authenticated/tenants/plans': typeof AuthenticatedTenantsPlansRoute
+  '/_authenticated/users/$id': typeof AuthenticatedUsersIdRoute
+  '/_authenticated/users/new': typeof AuthenticatedUsersNewRoute
+  '/_authenticated/webhooks/$id': typeof AuthenticatedWebhooksIdRoute
+  '/_authenticated/webhooks/new': typeof AuthenticatedWebhooksNewRoute
+  '/_authenticated/api-keys/': typeof AuthenticatedApiKeysIndexRoute
+  '/_authenticated/audit/': typeof AuthenticatedAuditIndexRoute
+  '/_authenticated/compliance/': typeof AuthenticatedComplianceIndexRoute
+  '/_authenticated/groups/': typeof AuthenticatedGroupsIndexRoute
+  '/_authenticated/integrations/': typeof AuthenticatedIntegrationsIndexRoute
+  '/_authenticated/license-plans/': typeof AuthenticatedLicensePlansIndexRoute
+  '/_authenticated/notification-templates/': typeof AuthenticatedNotificationTemplatesIndexRoute
+  '/_authenticated/notifications/': typeof AuthenticatedNotificationsIndexRoute
+  '/_authenticated/profile/': typeof AuthenticatedProfileIndexRoute
+  '/_authenticated/quotas/': typeof AuthenticatedQuotasIndexRoute
+  '/_authenticated/reports/': typeof AuthenticatedReportsIndexRoute
+  '/_authenticated/roles/': typeof AuthenticatedRolesIndexRoute
+  '/_authenticated/security/': typeof AuthenticatedSecurityIndexRoute
   '/_authenticated/settings/': typeof AuthenticatedSettingsIndexRoute
-  '/_authenticated/tasks/': typeof AuthenticatedTasksIndexRoute
+  '/_authenticated/subscriptions/': typeof AuthenticatedSubscriptionsIndexRoute
+  '/_authenticated/system/': typeof AuthenticatedSystemIndexRoute
+  '/_authenticated/tenant-settings/': typeof AuthenticatedTenantSettingsIndexRoute
+  '/_authenticated/tenants/': typeof AuthenticatedTenantsIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
+  '/_authenticated/webhooks/': typeof AuthenticatedWebhooksIndexRoute
+  '/_authenticated/compliance/policies/$id': typeof AuthenticatedCompliancePoliciesIdRoute
+  '/_authenticated/compliance/policies/new': typeof AuthenticatedCompliancePoliciesNewRoute
+  '/_authenticated/compliance/retention-policies/$id': typeof AuthenticatedComplianceRetentionPoliciesIdRoute
+  '/_authenticated/compliance/retention-policies/new': typeof AuthenticatedComplianceRetentionPoliciesNewRoute
+  '/_authenticated/compliance/retention-policies/': typeof AuthenticatedComplianceRetentionPoliciesIndexRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/clerk'
+    | '/mfa'
+    | '/reset-password'
+    | '/verify-email'
     | '/settings'
     | '/forgot-password'
     | '/otp'
@@ -303,23 +751,70 @@ export interface FileRouteTypes {
     | '/404'
     | '/500'
     | '/503'
+    | '/api-keys/$id'
+    | '/api-keys/new'
+    | '/billing/payments'
     | '/errors/$error'
+    | '/groups/$id'
+    | '/groups/new'
+    | '/integrations/$id'
+    | '/integrations/new'
+    | '/license-plans/$id'
+    | '/license-plans/new'
+    | '/notification-templates/$id'
+    | '/notification-templates/new'
+    | '/notifications/broadcast'
+    | '/profile/edit'
+    | '/profile/notifications'
+    | '/profile/security'
+    | '/profile/settings'
+    | '/reports/$id'
+    | '/reports/new'
+    | '/roles/$id'
+    | '/roles/new'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
-    | '/clerk/sign-in'
-    | '/clerk/sign-up'
-    | '/clerk/user-management'
-    | '/apps/'
-    | '/chats/'
-    | '/help-center/'
+    | '/subscriptions/$id'
+    | '/subscriptions/new'
+    | '/tenants/$id'
+    | '/tenants/new'
+    | '/tenants/plans'
+    | '/users/$id'
+    | '/users/new'
+    | '/webhooks/$id'
+    | '/webhooks/new'
+    | '/api-keys/'
+    | '/audit/'
+    | '/compliance/'
+    | '/groups/'
+    | '/integrations/'
+    | '/license-plans/'
+    | '/notification-templates/'
+    | '/notifications/'
+    | '/profile/'
+    | '/quotas/'
+    | '/reports/'
+    | '/roles/'
+    | '/security/'
     | '/settings/'
-    | '/tasks/'
+    | '/subscriptions/'
+    | '/system/'
+    | '/tenant-settings/'
+    | '/tenants/'
     | '/users/'
+    | '/webhooks/'
+    | '/compliance/policies/$id'
+    | '/compliance/policies/new'
+    | '/compliance/retention-policies/$id'
+    | '/compliance/retention-policies/new'
+    | '/compliance/retention-policies/'
   fileRoutesByTo: FileRoutesByTo
   to:
-    | '/clerk'
+    | '/mfa'
+    | '/reset-password'
+    | '/verify-email'
     | '/forgot-password'
     | '/otp'
     | '/sign-in'
@@ -331,27 +826,72 @@ export interface FileRouteTypes {
     | '/500'
     | '/503'
     | '/'
+    | '/api-keys/$id'
+    | '/api-keys/new'
+    | '/billing/payments'
     | '/errors/$error'
+    | '/groups/$id'
+    | '/groups/new'
+    | '/integrations/$id'
+    | '/integrations/new'
+    | '/license-plans/$id'
+    | '/license-plans/new'
+    | '/notification-templates/$id'
+    | '/notification-templates/new'
+    | '/notifications/broadcast'
+    | '/profile/edit'
+    | '/profile/notifications'
+    | '/profile/security'
+    | '/profile/settings'
+    | '/reports/$id'
+    | '/reports/new'
+    | '/roles/$id'
+    | '/roles/new'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
-    | '/clerk/sign-in'
-    | '/clerk/sign-up'
-    | '/clerk/user-management'
-    | '/apps'
-    | '/chats'
-    | '/help-center'
+    | '/subscriptions/$id'
+    | '/subscriptions/new'
+    | '/tenants/$id'
+    | '/tenants/new'
+    | '/tenants/plans'
+    | '/users/$id'
+    | '/users/new'
+    | '/webhooks/$id'
+    | '/webhooks/new'
+    | '/api-keys'
+    | '/audit'
+    | '/compliance'
+    | '/groups'
+    | '/integrations'
+    | '/license-plans'
+    | '/notification-templates'
+    | '/notifications'
+    | '/profile'
+    | '/quotas'
+    | '/reports'
+    | '/roles'
+    | '/security'
     | '/settings'
-    | '/tasks'
+    | '/subscriptions'
+    | '/system'
+    | '/tenant-settings'
+    | '/tenants'
     | '/users'
+    | '/webhooks'
+    | '/compliance/policies/$id'
+    | '/compliance/policies/new'
+    | '/compliance/retention-policies/$id'
+    | '/compliance/retention-policies/new'
+    | '/compliance/retention-policies'
   id:
     | '__root__'
     | '/_authenticated'
-    | '/clerk'
+    | '/mfa'
+    | '/reset-password'
+    | '/verify-email'
     | '/_authenticated/settings'
-    | '/clerk/(auth)'
-    | '/clerk/_authenticated'
     | '/(auth)/forgot-password'
     | '/(auth)/otp'
     | '/(auth)/sign-in'
@@ -363,25 +903,72 @@ export interface FileRouteTypes {
     | '/(errors)/500'
     | '/(errors)/503'
     | '/_authenticated/'
+    | '/_authenticated/api-keys/$id'
+    | '/_authenticated/api-keys/new'
+    | '/_authenticated/billing/payments'
     | '/_authenticated/errors/$error'
+    | '/_authenticated/groups/$id'
+    | '/_authenticated/groups/new'
+    | '/_authenticated/integrations/$id'
+    | '/_authenticated/integrations/new'
+    | '/_authenticated/license-plans/$id'
+    | '/_authenticated/license-plans/new'
+    | '/_authenticated/notification-templates/$id'
+    | '/_authenticated/notification-templates/new'
+    | '/_authenticated/notifications/broadcast'
+    | '/_authenticated/profile/edit'
+    | '/_authenticated/profile/notifications'
+    | '/_authenticated/profile/security'
+    | '/_authenticated/profile/settings'
+    | '/_authenticated/reports/$id'
+    | '/_authenticated/reports/new'
+    | '/_authenticated/roles/$id'
+    | '/_authenticated/roles/new'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/display'
     | '/_authenticated/settings/notifications'
-    | '/clerk/(auth)/sign-in'
-    | '/clerk/(auth)/sign-up'
-    | '/clerk/_authenticated/user-management'
-    | '/_authenticated/apps/'
-    | '/_authenticated/chats/'
-    | '/_authenticated/help-center/'
+    | '/_authenticated/subscriptions/$id'
+    | '/_authenticated/subscriptions/new'
+    | '/_authenticated/tenants/$id'
+    | '/_authenticated/tenants/new'
+    | '/_authenticated/tenants/plans'
+    | '/_authenticated/users/$id'
+    | '/_authenticated/users/new'
+    | '/_authenticated/webhooks/$id'
+    | '/_authenticated/webhooks/new'
+    | '/_authenticated/api-keys/'
+    | '/_authenticated/audit/'
+    | '/_authenticated/compliance/'
+    | '/_authenticated/groups/'
+    | '/_authenticated/integrations/'
+    | '/_authenticated/license-plans/'
+    | '/_authenticated/notification-templates/'
+    | '/_authenticated/notifications/'
+    | '/_authenticated/profile/'
+    | '/_authenticated/quotas/'
+    | '/_authenticated/reports/'
+    | '/_authenticated/roles/'
+    | '/_authenticated/security/'
     | '/_authenticated/settings/'
-    | '/_authenticated/tasks/'
+    | '/_authenticated/subscriptions/'
+    | '/_authenticated/system/'
+    | '/_authenticated/tenant-settings/'
+    | '/_authenticated/tenants/'
     | '/_authenticated/users/'
+    | '/_authenticated/webhooks/'
+    | '/_authenticated/compliance/policies/$id'
+    | '/_authenticated/compliance/policies/new'
+    | '/_authenticated/compliance/retention-policies/$id'
+    | '/_authenticated/compliance/retention-policies/new'
+    | '/_authenticated/compliance/retention-policies/'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   AuthenticatedRouteRoute: typeof AuthenticatedRouteRouteWithChildren
-  ClerkRouteRoute: typeof ClerkRouteRouteWithChildren
+  MfaRoute: typeof MfaRoute
+  ResetPasswordRoute: typeof ResetPasswordRoute
+  VerifyEmailRoute: typeof VerifyEmailRoute
   authForgotPasswordRoute: typeof authForgotPasswordRoute
   authOtpRoute: typeof authOtpRoute
   authSignInRoute: typeof authSignInRoute
@@ -396,11 +983,25 @@ export interface RootRouteChildren {
 
 declare module '@tanstack/react-router' {
   interface FileRoutesByPath {
-    '/clerk': {
-      id: '/clerk'
-      path: '/clerk'
-      fullPath: '/clerk'
-      preLoaderRoute: typeof ClerkRouteRouteImport
+    '/verify-email': {
+      id: '/verify-email'
+      path: '/verify-email'
+      fullPath: '/verify-email'
+      preLoaderRoute: typeof VerifyEmailRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/reset-password': {
+      id: '/reset-password'
+      path: '/reset-password'
+      fullPath: '/reset-password'
+      preLoaderRoute: typeof ResetPasswordRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/mfa': {
+      id: '/mfa'
+      path: '/mfa'
+      fullPath: '/mfa'
+      preLoaderRoute: typeof MfaRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/_authenticated': {
@@ -487,25 +1088,18 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof authForgotPasswordRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/clerk/_authenticated': {
-      id: '/clerk/_authenticated'
-      path: ''
-      fullPath: '/clerk'
-      preLoaderRoute: typeof ClerkAuthenticatedRouteRouteImport
-      parentRoute: typeof ClerkRouteRoute
-    }
-    '/clerk/(auth)': {
-      id: '/clerk/(auth)'
-      path: ''
-      fullPath: '/clerk'
-      preLoaderRoute: typeof ClerkauthRouteRouteImport
-      parentRoute: typeof ClerkRouteRoute
-    }
     '/_authenticated/settings': {
       id: '/_authenticated/settings'
       path: '/settings'
       fullPath: '/settings'
       preLoaderRoute: typeof AuthenticatedSettingsRouteRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/webhooks/': {
+      id: '/_authenticated/webhooks/'
+      path: '/webhooks'
+      fullPath: '/webhooks/'
+      preLoaderRoute: typeof AuthenticatedWebhooksIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/users/': {
@@ -515,11 +1109,32 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedUsersIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/tasks/': {
-      id: '/_authenticated/tasks/'
-      path: '/tasks'
-      fullPath: '/tasks/'
-      preLoaderRoute: typeof AuthenticatedTasksIndexRouteImport
+    '/_authenticated/tenants/': {
+      id: '/_authenticated/tenants/'
+      path: '/tenants'
+      fullPath: '/tenants/'
+      preLoaderRoute: typeof AuthenticatedTenantsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tenant-settings/': {
+      id: '/_authenticated/tenant-settings/'
+      path: '/tenant-settings'
+      fullPath: '/tenant-settings/'
+      preLoaderRoute: typeof AuthenticatedTenantSettingsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/system/': {
+      id: '/_authenticated/system/'
+      path: '/system'
+      fullPath: '/system/'
+      preLoaderRoute: typeof AuthenticatedSystemIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/subscriptions/': {
+      id: '/_authenticated/subscriptions/'
+      path: '/subscriptions'
+      fullPath: '/subscriptions/'
+      preLoaderRoute: typeof AuthenticatedSubscriptionsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/': {
@@ -529,47 +1144,159 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsIndexRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
-    '/_authenticated/help-center/': {
-      id: '/_authenticated/help-center/'
-      path: '/help-center'
-      fullPath: '/help-center/'
-      preLoaderRoute: typeof AuthenticatedHelpCenterIndexRouteImport
+    '/_authenticated/security/': {
+      id: '/_authenticated/security/'
+      path: '/security'
+      fullPath: '/security/'
+      preLoaderRoute: typeof AuthenticatedSecurityIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/chats/': {
-      id: '/_authenticated/chats/'
-      path: '/chats'
-      fullPath: '/chats/'
-      preLoaderRoute: typeof AuthenticatedChatsIndexRouteImport
+    '/_authenticated/roles/': {
+      id: '/_authenticated/roles/'
+      path: '/roles'
+      fullPath: '/roles/'
+      preLoaderRoute: typeof AuthenticatedRolesIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/_authenticated/apps/': {
-      id: '/_authenticated/apps/'
-      path: '/apps'
-      fullPath: '/apps/'
-      preLoaderRoute: typeof AuthenticatedAppsIndexRouteImport
+    '/_authenticated/reports/': {
+      id: '/_authenticated/reports/'
+      path: '/reports'
+      fullPath: '/reports/'
+      preLoaderRoute: typeof AuthenticatedReportsIndexRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/clerk/_authenticated/user-management': {
-      id: '/clerk/_authenticated/user-management'
-      path: '/user-management'
-      fullPath: '/clerk/user-management'
-      preLoaderRoute: typeof ClerkAuthenticatedUserManagementRouteImport
-      parentRoute: typeof ClerkAuthenticatedRouteRoute
+    '/_authenticated/quotas/': {
+      id: '/_authenticated/quotas/'
+      path: '/quotas'
+      fullPath: '/quotas/'
+      preLoaderRoute: typeof AuthenticatedQuotasIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/clerk/(auth)/sign-up': {
-      id: '/clerk/(auth)/sign-up'
-      path: '/sign-up'
-      fullPath: '/clerk/sign-up'
-      preLoaderRoute: typeof ClerkauthSignUpRouteImport
-      parentRoute: typeof ClerkauthRouteRoute
+    '/_authenticated/profile/': {
+      id: '/_authenticated/profile/'
+      path: '/profile'
+      fullPath: '/profile/'
+      preLoaderRoute: typeof AuthenticatedProfileIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
-    '/clerk/(auth)/sign-in': {
-      id: '/clerk/(auth)/sign-in'
-      path: '/sign-in'
-      fullPath: '/clerk/sign-in'
-      preLoaderRoute: typeof ClerkauthSignInRouteImport
-      parentRoute: typeof ClerkauthRouteRoute
+    '/_authenticated/notifications/': {
+      id: '/_authenticated/notifications/'
+      path: '/notifications'
+      fullPath: '/notifications/'
+      preLoaderRoute: typeof AuthenticatedNotificationsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/notification-templates/': {
+      id: '/_authenticated/notification-templates/'
+      path: '/notification-templates'
+      fullPath: '/notification-templates/'
+      preLoaderRoute: typeof AuthenticatedNotificationTemplatesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/license-plans/': {
+      id: '/_authenticated/license-plans/'
+      path: '/license-plans'
+      fullPath: '/license-plans/'
+      preLoaderRoute: typeof AuthenticatedLicensePlansIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/integrations/': {
+      id: '/_authenticated/integrations/'
+      path: '/integrations'
+      fullPath: '/integrations/'
+      preLoaderRoute: typeof AuthenticatedIntegrationsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/groups/': {
+      id: '/_authenticated/groups/'
+      path: '/groups'
+      fullPath: '/groups/'
+      preLoaderRoute: typeof AuthenticatedGroupsIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/compliance/': {
+      id: '/_authenticated/compliance/'
+      path: '/compliance'
+      fullPath: '/compliance/'
+      preLoaderRoute: typeof AuthenticatedComplianceIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/audit/': {
+      id: '/_authenticated/audit/'
+      path: '/audit'
+      fullPath: '/audit/'
+      preLoaderRoute: typeof AuthenticatedAuditIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/api-keys/': {
+      id: '/_authenticated/api-keys/'
+      path: '/api-keys'
+      fullPath: '/api-keys/'
+      preLoaderRoute: typeof AuthenticatedApiKeysIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/webhooks/new': {
+      id: '/_authenticated/webhooks/new'
+      path: '/webhooks/new'
+      fullPath: '/webhooks/new'
+      preLoaderRoute: typeof AuthenticatedWebhooksNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/webhooks/$id': {
+      id: '/_authenticated/webhooks/$id'
+      path: '/webhooks/$id'
+      fullPath: '/webhooks/$id'
+      preLoaderRoute: typeof AuthenticatedWebhooksIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/users/new': {
+      id: '/_authenticated/users/new'
+      path: '/users/new'
+      fullPath: '/users/new'
+      preLoaderRoute: typeof AuthenticatedUsersNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/users/$id': {
+      id: '/_authenticated/users/$id'
+      path: '/users/$id'
+      fullPath: '/users/$id'
+      preLoaderRoute: typeof AuthenticatedUsersIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tenants/plans': {
+      id: '/_authenticated/tenants/plans'
+      path: '/tenants/plans'
+      fullPath: '/tenants/plans'
+      preLoaderRoute: typeof AuthenticatedTenantsPlansRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tenants/new': {
+      id: '/_authenticated/tenants/new'
+      path: '/tenants/new'
+      fullPath: '/tenants/new'
+      preLoaderRoute: typeof AuthenticatedTenantsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/tenants/$id': {
+      id: '/_authenticated/tenants/$id'
+      path: '/tenants/$id'
+      fullPath: '/tenants/$id'
+      preLoaderRoute: typeof AuthenticatedTenantsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/subscriptions/new': {
+      id: '/_authenticated/subscriptions/new'
+      path: '/subscriptions/new'
+      fullPath: '/subscriptions/new'
+      preLoaderRoute: typeof AuthenticatedSubscriptionsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/subscriptions/$id': {
+      id: '/_authenticated/subscriptions/$id'
+      path: '/subscriptions/$id'
+      fullPath: '/subscriptions/$id'
+      preLoaderRoute: typeof AuthenticatedSubscriptionsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/settings/notifications': {
       id: '/_authenticated/settings/notifications'
@@ -599,11 +1326,186 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedSettingsAccountRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
     }
+    '/_authenticated/roles/new': {
+      id: '/_authenticated/roles/new'
+      path: '/roles/new'
+      fullPath: '/roles/new'
+      preLoaderRoute: typeof AuthenticatedRolesNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/roles/$id': {
+      id: '/_authenticated/roles/$id'
+      path: '/roles/$id'
+      fullPath: '/roles/$id'
+      preLoaderRoute: typeof AuthenticatedRolesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reports/new': {
+      id: '/_authenticated/reports/new'
+      path: '/reports/new'
+      fullPath: '/reports/new'
+      preLoaderRoute: typeof AuthenticatedReportsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/reports/$id': {
+      id: '/_authenticated/reports/$id'
+      path: '/reports/$id'
+      fullPath: '/reports/$id'
+      preLoaderRoute: typeof AuthenticatedReportsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile/settings': {
+      id: '/_authenticated/profile/settings'
+      path: '/profile/settings'
+      fullPath: '/profile/settings'
+      preLoaderRoute: typeof AuthenticatedProfileSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile/security': {
+      id: '/_authenticated/profile/security'
+      path: '/profile/security'
+      fullPath: '/profile/security'
+      preLoaderRoute: typeof AuthenticatedProfileSecurityRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile/notifications': {
+      id: '/_authenticated/profile/notifications'
+      path: '/profile/notifications'
+      fullPath: '/profile/notifications'
+      preLoaderRoute: typeof AuthenticatedProfileNotificationsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/profile/edit': {
+      id: '/_authenticated/profile/edit'
+      path: '/profile/edit'
+      fullPath: '/profile/edit'
+      preLoaderRoute: typeof AuthenticatedProfileEditRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/notifications/broadcast': {
+      id: '/_authenticated/notifications/broadcast'
+      path: '/notifications/broadcast'
+      fullPath: '/notifications/broadcast'
+      preLoaderRoute: typeof AuthenticatedNotificationsBroadcastRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/notification-templates/new': {
+      id: '/_authenticated/notification-templates/new'
+      path: '/notification-templates/new'
+      fullPath: '/notification-templates/new'
+      preLoaderRoute: typeof AuthenticatedNotificationTemplatesNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/notification-templates/$id': {
+      id: '/_authenticated/notification-templates/$id'
+      path: '/notification-templates/$id'
+      fullPath: '/notification-templates/$id'
+      preLoaderRoute: typeof AuthenticatedNotificationTemplatesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/license-plans/new': {
+      id: '/_authenticated/license-plans/new'
+      path: '/license-plans/new'
+      fullPath: '/license-plans/new'
+      preLoaderRoute: typeof AuthenticatedLicensePlansNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/license-plans/$id': {
+      id: '/_authenticated/license-plans/$id'
+      path: '/license-plans/$id'
+      fullPath: '/license-plans/$id'
+      preLoaderRoute: typeof AuthenticatedLicensePlansIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/integrations/new': {
+      id: '/_authenticated/integrations/new'
+      path: '/integrations/new'
+      fullPath: '/integrations/new'
+      preLoaderRoute: typeof AuthenticatedIntegrationsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/integrations/$id': {
+      id: '/_authenticated/integrations/$id'
+      path: '/integrations/$id'
+      fullPath: '/integrations/$id'
+      preLoaderRoute: typeof AuthenticatedIntegrationsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/groups/new': {
+      id: '/_authenticated/groups/new'
+      path: '/groups/new'
+      fullPath: '/groups/new'
+      preLoaderRoute: typeof AuthenticatedGroupsNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/groups/$id': {
+      id: '/_authenticated/groups/$id'
+      path: '/groups/$id'
+      fullPath: '/groups/$id'
+      preLoaderRoute: typeof AuthenticatedGroupsIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/errors/$error': {
       id: '/_authenticated/errors/$error'
       path: '/errors/$error'
       fullPath: '/errors/$error'
       preLoaderRoute: typeof AuthenticatedErrorsErrorRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/billing/payments': {
+      id: '/_authenticated/billing/payments'
+      path: '/billing/payments'
+      fullPath: '/billing/payments'
+      preLoaderRoute: typeof AuthenticatedBillingPaymentsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/api-keys/new': {
+      id: '/_authenticated/api-keys/new'
+      path: '/api-keys/new'
+      fullPath: '/api-keys/new'
+      preLoaderRoute: typeof AuthenticatedApiKeysNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/api-keys/$id': {
+      id: '/_authenticated/api-keys/$id'
+      path: '/api-keys/$id'
+      fullPath: '/api-keys/$id'
+      preLoaderRoute: typeof AuthenticatedApiKeysIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/compliance/retention-policies/': {
+      id: '/_authenticated/compliance/retention-policies/'
+      path: '/compliance/retention-policies'
+      fullPath: '/compliance/retention-policies/'
+      preLoaderRoute: typeof AuthenticatedComplianceRetentionPoliciesIndexRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/compliance/retention-policies/new': {
+      id: '/_authenticated/compliance/retention-policies/new'
+      path: '/compliance/retention-policies/new'
+      fullPath: '/compliance/retention-policies/new'
+      preLoaderRoute: typeof AuthenticatedComplianceRetentionPoliciesNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/compliance/retention-policies/$id': {
+      id: '/_authenticated/compliance/retention-policies/$id'
+      path: '/compliance/retention-policies/$id'
+      fullPath: '/compliance/retention-policies/$id'
+      preLoaderRoute: typeof AuthenticatedComplianceRetentionPoliciesIdRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/compliance/policies/new': {
+      id: '/_authenticated/compliance/policies/new'
+      path: '/compliance/policies/new'
+      fullPath: '/compliance/policies/new'
+      preLoaderRoute: typeof AuthenticatedCompliancePoliciesNewRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/compliance/policies/$id': {
+      id: '/_authenticated/compliance/policies/$id'
+      path: '/compliance/policies/$id'
+      fullPath: '/compliance/policies/$id'
+      preLoaderRoute: typeof AuthenticatedCompliancePoliciesIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
   }
@@ -635,74 +1537,139 @@ const AuthenticatedSettingsRouteRouteWithChildren =
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
+  AuthenticatedApiKeysIdRoute: typeof AuthenticatedApiKeysIdRoute
+  AuthenticatedApiKeysNewRoute: typeof AuthenticatedApiKeysNewRoute
+  AuthenticatedBillingPaymentsRoute: typeof AuthenticatedBillingPaymentsRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
-  AuthenticatedAppsIndexRoute: typeof AuthenticatedAppsIndexRoute
-  AuthenticatedChatsIndexRoute: typeof AuthenticatedChatsIndexRoute
-  AuthenticatedHelpCenterIndexRoute: typeof AuthenticatedHelpCenterIndexRoute
-  AuthenticatedTasksIndexRoute: typeof AuthenticatedTasksIndexRoute
+  AuthenticatedGroupsIdRoute: typeof AuthenticatedGroupsIdRoute
+  AuthenticatedGroupsNewRoute: typeof AuthenticatedGroupsNewRoute
+  AuthenticatedIntegrationsIdRoute: typeof AuthenticatedIntegrationsIdRoute
+  AuthenticatedIntegrationsNewRoute: typeof AuthenticatedIntegrationsNewRoute
+  AuthenticatedLicensePlansIdRoute: typeof AuthenticatedLicensePlansIdRoute
+  AuthenticatedLicensePlansNewRoute: typeof AuthenticatedLicensePlansNewRoute
+  AuthenticatedNotificationTemplatesIdRoute: typeof AuthenticatedNotificationTemplatesIdRoute
+  AuthenticatedNotificationTemplatesNewRoute: typeof AuthenticatedNotificationTemplatesNewRoute
+  AuthenticatedNotificationsBroadcastRoute: typeof AuthenticatedNotificationsBroadcastRoute
+  AuthenticatedProfileEditRoute: typeof AuthenticatedProfileEditRoute
+  AuthenticatedProfileNotificationsRoute: typeof AuthenticatedProfileNotificationsRoute
+  AuthenticatedProfileSecurityRoute: typeof AuthenticatedProfileSecurityRoute
+  AuthenticatedProfileSettingsRoute: typeof AuthenticatedProfileSettingsRoute
+  AuthenticatedReportsIdRoute: typeof AuthenticatedReportsIdRoute
+  AuthenticatedReportsNewRoute: typeof AuthenticatedReportsNewRoute
+  AuthenticatedRolesIdRoute: typeof AuthenticatedRolesIdRoute
+  AuthenticatedRolesNewRoute: typeof AuthenticatedRolesNewRoute
+  AuthenticatedSubscriptionsIdRoute: typeof AuthenticatedSubscriptionsIdRoute
+  AuthenticatedSubscriptionsNewRoute: typeof AuthenticatedSubscriptionsNewRoute
+  AuthenticatedTenantsIdRoute: typeof AuthenticatedTenantsIdRoute
+  AuthenticatedTenantsNewRoute: typeof AuthenticatedTenantsNewRoute
+  AuthenticatedTenantsPlansRoute: typeof AuthenticatedTenantsPlansRoute
+  AuthenticatedUsersIdRoute: typeof AuthenticatedUsersIdRoute
+  AuthenticatedUsersNewRoute: typeof AuthenticatedUsersNewRoute
+  AuthenticatedWebhooksIdRoute: typeof AuthenticatedWebhooksIdRoute
+  AuthenticatedWebhooksNewRoute: typeof AuthenticatedWebhooksNewRoute
+  AuthenticatedApiKeysIndexRoute: typeof AuthenticatedApiKeysIndexRoute
+  AuthenticatedAuditIndexRoute: typeof AuthenticatedAuditIndexRoute
+  AuthenticatedComplianceIndexRoute: typeof AuthenticatedComplianceIndexRoute
+  AuthenticatedGroupsIndexRoute: typeof AuthenticatedGroupsIndexRoute
+  AuthenticatedIntegrationsIndexRoute: typeof AuthenticatedIntegrationsIndexRoute
+  AuthenticatedLicensePlansIndexRoute: typeof AuthenticatedLicensePlansIndexRoute
+  AuthenticatedNotificationTemplatesIndexRoute: typeof AuthenticatedNotificationTemplatesIndexRoute
+  AuthenticatedNotificationsIndexRoute: typeof AuthenticatedNotificationsIndexRoute
+  AuthenticatedProfileIndexRoute: typeof AuthenticatedProfileIndexRoute
+  AuthenticatedQuotasIndexRoute: typeof AuthenticatedQuotasIndexRoute
+  AuthenticatedReportsIndexRoute: typeof AuthenticatedReportsIndexRoute
+  AuthenticatedRolesIndexRoute: typeof AuthenticatedRolesIndexRoute
+  AuthenticatedSecurityIndexRoute: typeof AuthenticatedSecurityIndexRoute
+  AuthenticatedSubscriptionsIndexRoute: typeof AuthenticatedSubscriptionsIndexRoute
+  AuthenticatedSystemIndexRoute: typeof AuthenticatedSystemIndexRoute
+  AuthenticatedTenantSettingsIndexRoute: typeof AuthenticatedTenantSettingsIndexRoute
+  AuthenticatedTenantsIndexRoute: typeof AuthenticatedTenantsIndexRoute
   AuthenticatedUsersIndexRoute: typeof AuthenticatedUsersIndexRoute
+  AuthenticatedWebhooksIndexRoute: typeof AuthenticatedWebhooksIndexRoute
+  AuthenticatedCompliancePoliciesIdRoute: typeof AuthenticatedCompliancePoliciesIdRoute
+  AuthenticatedCompliancePoliciesNewRoute: typeof AuthenticatedCompliancePoliciesNewRoute
+  AuthenticatedComplianceRetentionPoliciesIdRoute: typeof AuthenticatedComplianceRetentionPoliciesIdRoute
+  AuthenticatedComplianceRetentionPoliciesNewRoute: typeof AuthenticatedComplianceRetentionPoliciesNewRoute
+  AuthenticatedComplianceRetentionPoliciesIndexRoute: typeof AuthenticatedComplianceRetentionPoliciesIndexRoute
 }
 
 const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedSettingsRouteRoute: AuthenticatedSettingsRouteRouteWithChildren,
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
+  AuthenticatedApiKeysIdRoute: AuthenticatedApiKeysIdRoute,
+  AuthenticatedApiKeysNewRoute: AuthenticatedApiKeysNewRoute,
+  AuthenticatedBillingPaymentsRoute: AuthenticatedBillingPaymentsRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
-  AuthenticatedAppsIndexRoute: AuthenticatedAppsIndexRoute,
-  AuthenticatedChatsIndexRoute: AuthenticatedChatsIndexRoute,
-  AuthenticatedHelpCenterIndexRoute: AuthenticatedHelpCenterIndexRoute,
-  AuthenticatedTasksIndexRoute: AuthenticatedTasksIndexRoute,
+  AuthenticatedGroupsIdRoute: AuthenticatedGroupsIdRoute,
+  AuthenticatedGroupsNewRoute: AuthenticatedGroupsNewRoute,
+  AuthenticatedIntegrationsIdRoute: AuthenticatedIntegrationsIdRoute,
+  AuthenticatedIntegrationsNewRoute: AuthenticatedIntegrationsNewRoute,
+  AuthenticatedLicensePlansIdRoute: AuthenticatedLicensePlansIdRoute,
+  AuthenticatedLicensePlansNewRoute: AuthenticatedLicensePlansNewRoute,
+  AuthenticatedNotificationTemplatesIdRoute:
+    AuthenticatedNotificationTemplatesIdRoute,
+  AuthenticatedNotificationTemplatesNewRoute:
+    AuthenticatedNotificationTemplatesNewRoute,
+  AuthenticatedNotificationsBroadcastRoute:
+    AuthenticatedNotificationsBroadcastRoute,
+  AuthenticatedProfileEditRoute: AuthenticatedProfileEditRoute,
+  AuthenticatedProfileNotificationsRoute:
+    AuthenticatedProfileNotificationsRoute,
+  AuthenticatedProfileSecurityRoute: AuthenticatedProfileSecurityRoute,
+  AuthenticatedProfileSettingsRoute: AuthenticatedProfileSettingsRoute,
+  AuthenticatedReportsIdRoute: AuthenticatedReportsIdRoute,
+  AuthenticatedReportsNewRoute: AuthenticatedReportsNewRoute,
+  AuthenticatedRolesIdRoute: AuthenticatedRolesIdRoute,
+  AuthenticatedRolesNewRoute: AuthenticatedRolesNewRoute,
+  AuthenticatedSubscriptionsIdRoute: AuthenticatedSubscriptionsIdRoute,
+  AuthenticatedSubscriptionsNewRoute: AuthenticatedSubscriptionsNewRoute,
+  AuthenticatedTenantsIdRoute: AuthenticatedTenantsIdRoute,
+  AuthenticatedTenantsNewRoute: AuthenticatedTenantsNewRoute,
+  AuthenticatedTenantsPlansRoute: AuthenticatedTenantsPlansRoute,
+  AuthenticatedUsersIdRoute: AuthenticatedUsersIdRoute,
+  AuthenticatedUsersNewRoute: AuthenticatedUsersNewRoute,
+  AuthenticatedWebhooksIdRoute: AuthenticatedWebhooksIdRoute,
+  AuthenticatedWebhooksNewRoute: AuthenticatedWebhooksNewRoute,
+  AuthenticatedApiKeysIndexRoute: AuthenticatedApiKeysIndexRoute,
+  AuthenticatedAuditIndexRoute: AuthenticatedAuditIndexRoute,
+  AuthenticatedComplianceIndexRoute: AuthenticatedComplianceIndexRoute,
+  AuthenticatedGroupsIndexRoute: AuthenticatedGroupsIndexRoute,
+  AuthenticatedIntegrationsIndexRoute: AuthenticatedIntegrationsIndexRoute,
+  AuthenticatedLicensePlansIndexRoute: AuthenticatedLicensePlansIndexRoute,
+  AuthenticatedNotificationTemplatesIndexRoute:
+    AuthenticatedNotificationTemplatesIndexRoute,
+  AuthenticatedNotificationsIndexRoute: AuthenticatedNotificationsIndexRoute,
+  AuthenticatedProfileIndexRoute: AuthenticatedProfileIndexRoute,
+  AuthenticatedQuotasIndexRoute: AuthenticatedQuotasIndexRoute,
+  AuthenticatedReportsIndexRoute: AuthenticatedReportsIndexRoute,
+  AuthenticatedRolesIndexRoute: AuthenticatedRolesIndexRoute,
+  AuthenticatedSecurityIndexRoute: AuthenticatedSecurityIndexRoute,
+  AuthenticatedSubscriptionsIndexRoute: AuthenticatedSubscriptionsIndexRoute,
+  AuthenticatedSystemIndexRoute: AuthenticatedSystemIndexRoute,
+  AuthenticatedTenantSettingsIndexRoute: AuthenticatedTenantSettingsIndexRoute,
+  AuthenticatedTenantsIndexRoute: AuthenticatedTenantsIndexRoute,
   AuthenticatedUsersIndexRoute: AuthenticatedUsersIndexRoute,
+  AuthenticatedWebhooksIndexRoute: AuthenticatedWebhooksIndexRoute,
+  AuthenticatedCompliancePoliciesIdRoute:
+    AuthenticatedCompliancePoliciesIdRoute,
+  AuthenticatedCompliancePoliciesNewRoute:
+    AuthenticatedCompliancePoliciesNewRoute,
+  AuthenticatedComplianceRetentionPoliciesIdRoute:
+    AuthenticatedComplianceRetentionPoliciesIdRoute,
+  AuthenticatedComplianceRetentionPoliciesNewRoute:
+    AuthenticatedComplianceRetentionPoliciesNewRoute,
+  AuthenticatedComplianceRetentionPoliciesIndexRoute:
+    AuthenticatedComplianceRetentionPoliciesIndexRoute,
 }
 
 const AuthenticatedRouteRouteWithChildren =
   AuthenticatedRouteRoute._addFileChildren(AuthenticatedRouteRouteChildren)
 
-interface ClerkauthRouteRouteChildren {
-  ClerkauthSignInRoute: typeof ClerkauthSignInRoute
-  ClerkauthSignUpRoute: typeof ClerkauthSignUpRoute
-}
-
-const ClerkauthRouteRouteChildren: ClerkauthRouteRouteChildren = {
-  ClerkauthSignInRoute: ClerkauthSignInRoute,
-  ClerkauthSignUpRoute: ClerkauthSignUpRoute,
-}
-
-const ClerkauthRouteRouteWithChildren = ClerkauthRouteRoute._addFileChildren(
-  ClerkauthRouteRouteChildren,
-)
-
-interface ClerkAuthenticatedRouteRouteChildren {
-  ClerkAuthenticatedUserManagementRoute: typeof ClerkAuthenticatedUserManagementRoute
-}
-
-const ClerkAuthenticatedRouteRouteChildren: ClerkAuthenticatedRouteRouteChildren =
-  {
-    ClerkAuthenticatedUserManagementRoute:
-      ClerkAuthenticatedUserManagementRoute,
-  }
-
-const ClerkAuthenticatedRouteRouteWithChildren =
-  ClerkAuthenticatedRouteRoute._addFileChildren(
-    ClerkAuthenticatedRouteRouteChildren,
-  )
-
-interface ClerkRouteRouteChildren {
-  ClerkauthRouteRoute: typeof ClerkauthRouteRouteWithChildren
-  ClerkAuthenticatedRouteRoute: typeof ClerkAuthenticatedRouteRouteWithChildren
-}
-
-const ClerkRouteRouteChildren: ClerkRouteRouteChildren = {
-  ClerkauthRouteRoute: ClerkauthRouteRouteWithChildren,
-  ClerkAuthenticatedRouteRoute: ClerkAuthenticatedRouteRouteWithChildren,
-}
-
-const ClerkRouteRouteWithChildren = ClerkRouteRoute._addFileChildren(
-  ClerkRouteRouteChildren,
-)
-
 const rootRouteChildren: RootRouteChildren = {
   AuthenticatedRouteRoute: AuthenticatedRouteRouteWithChildren,
-  ClerkRouteRoute: ClerkRouteRouteWithChildren,
+  MfaRoute: MfaRoute,
+  ResetPasswordRoute: ResetPasswordRoute,
+  VerifyEmailRoute: VerifyEmailRoute,
   authForgotPasswordRoute: authForgotPasswordRoute,
   authOtpRoute: authOtpRoute,
   authSignInRoute: authSignInRoute,
