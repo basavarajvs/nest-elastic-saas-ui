@@ -1,5 +1,5 @@
 import { useQuery } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import {
   Banknote,
   CreditCard,
@@ -61,6 +61,7 @@ function formatCurrency(amount: number) {
 }
 
 export function BillingDashboardPage() {
+  const navigate = useNavigate()
   const { data, isLoading, isError, error, refetch } = useDashboard()
 
   return (
@@ -73,9 +74,7 @@ export function BillingDashboardPage() {
             <Button variant='outline' size='icon' onClick={() => refetch()}>
               <RefreshCw className='h-4 w-4' />
             </Button>
-            <Button asChild>
-              <Link to='/billing/invoices'>View Invoices</Link>
-            </Button>
+              <Button variant='outline' onClick={() => navigate({ to: '/billing/invoices' })}>View Invoices</Button>
           </div>
         }
       />
@@ -217,7 +216,7 @@ export function BillingDashboardPage() {
                       tickMargin={8}
                     />
                     <RechartsTooltip
-                      formatter={(value: number) => formatCurrency(value)}
+                      formatter={(value) => formatCurrency(value as number)}
                     />
                     <Area
                       type='monotone'

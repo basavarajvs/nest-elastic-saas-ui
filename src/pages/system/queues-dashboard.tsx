@@ -21,7 +21,6 @@ import {
   CardContent,
   CardHeader,
   CardTitle,
-  CardDescription,
 } from '@/components/ui/card'
 import {
   AlertDialog,
@@ -95,7 +94,7 @@ export function QueuesDashboardPage() {
         <EmptyState
           title='No queues active'
           description='There are currently no background queues running in the system.'
-          icon={Server}
+          icon={<Server className='h-10 w-10' />}
         />
       ) : (
         <div className='grid gap-6 md:grid-cols-2 lg:grid-cols-3'>

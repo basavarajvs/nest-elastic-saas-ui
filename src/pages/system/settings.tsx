@@ -155,7 +155,7 @@ export function SystemSettingsPage() {
             <EmptyState
               title='No settings configured'
               description='There are currently no global settings configured in the system.'
-              icon={Settings2}
+              icon={<Settings2 className='h-10 w-10' />}
             />
           ) : (
             <Table>

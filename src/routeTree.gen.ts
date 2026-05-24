@@ -52,12 +52,21 @@ import { Route as AuthenticatedUsersIdRouteImport } from './routes/_authenticate
 import { Route as AuthenticatedTenantsPlansRouteImport } from './routes/_authenticated/tenants/plans'
 import { Route as AuthenticatedTenantsNewRouteImport } from './routes/_authenticated/tenants/new'
 import { Route as AuthenticatedTenantsIdRouteImport } from './routes/_authenticated/tenants/$id'
+import { Route as AuthenticatedSystemSmtpRouteImport } from './routes/_authenticated/system/smtp'
+import { Route as AuthenticatedSystemSettingsRouteImport } from './routes/_authenticated/system/settings'
+import { Route as AuthenticatedSystemRequestLogRouteImport } from './routes/_authenticated/system/request-log'
+import { Route as AuthenticatedSystemQueuesRouteImport } from './routes/_authenticated/system/queues'
+import { Route as AuthenticatedSystemHealthRouteImport } from './routes/_authenticated/system/health'
+import { Route as AuthenticatedSystemFeatureFlagsRouteImport } from './routes/_authenticated/system/feature-flags'
 import { Route as AuthenticatedSubscriptionsNewRouteImport } from './routes/_authenticated/subscriptions/new'
 import { Route as AuthenticatedSubscriptionsIdRouteImport } from './routes/_authenticated/subscriptions/$id'
 import { Route as AuthenticatedSettingsNotificationsRouteImport } from './routes/_authenticated/settings/notifications'
 import { Route as AuthenticatedSettingsDisplayRouteImport } from './routes/_authenticated/settings/display'
 import { Route as AuthenticatedSettingsAppearanceRouteImport } from './routes/_authenticated/settings/appearance'
 import { Route as AuthenticatedSettingsAccountRouteImport } from './routes/_authenticated/settings/account'
+import { Route as AuthenticatedSecuritySsoRouteImport } from './routes/_authenticated/security/sso'
+import { Route as AuthenticatedSecuritySessionsRouteImport } from './routes/_authenticated/security/sessions'
+import { Route as AuthenticatedSecurityIpRulesRouteImport } from './routes/_authenticated/security/ip-rules'
 import { Route as AuthenticatedRolesNewRouteImport } from './routes/_authenticated/roles/new'
 import { Route as AuthenticatedRolesIdRouteImport } from './routes/_authenticated/roles/$id'
 import { Route as AuthenticatedReportsNewRouteImport } from './routes/_authenticated/reports/new'
@@ -77,6 +86,8 @@ import { Route as AuthenticatedGroupsNewRouteImport } from './routes/_authentica
 import { Route as AuthenticatedGroupsIdRouteImport } from './routes/_authenticated/groups/$id'
 import { Route as AuthenticatedErrorsErrorRouteImport } from './routes/_authenticated/errors/$error'
 import { Route as AuthenticatedBillingPaymentsRouteImport } from './routes/_authenticated/billing/payments'
+import { Route as AuthenticatedBillingInvoicesRouteImport } from './routes/_authenticated/billing/invoices'
+import { Route as AuthenticatedBillingDashboardRouteImport } from './routes/_authenticated/billing/dashboard'
 import { Route as AuthenticatedApiKeysNewRouteImport } from './routes/_authenticated/api-keys/new'
 import { Route as AuthenticatedApiKeysIdRouteImport } from './routes/_authenticated/api-keys/$id'
 import { Route as AuthenticatedComplianceRetentionPoliciesIndexRouteImport } from './routes/_authenticated/compliance/retention-policies/index'
@@ -84,6 +95,7 @@ import { Route as AuthenticatedComplianceRetentionPoliciesNewRouteImport } from 
 import { Route as AuthenticatedComplianceRetentionPoliciesIdRouteImport } from './routes/_authenticated/compliance/retention-policies/$id'
 import { Route as AuthenticatedCompliancePoliciesNewRouteImport } from './routes/_authenticated/compliance/policies/new'
 import { Route as AuthenticatedCompliancePoliciesIdRouteImport } from './routes/_authenticated/compliance/policies/$id'
+import { Route as AuthenticatedBillingInvoicesIdRouteImport } from './routes/_authenticated/billing/invoices.$id'
 
 const VerifyEmailRoute = VerifyEmailRouteImport.update({
   id: '/verify-email',
@@ -319,6 +331,41 @@ const AuthenticatedTenantsIdRoute = AuthenticatedTenantsIdRouteImport.update({
   path: '/tenants/$id',
   getParentRoute: () => AuthenticatedRouteRoute,
 } as any)
+const AuthenticatedSystemSmtpRoute = AuthenticatedSystemSmtpRouteImport.update({
+  id: '/system/smtp',
+  path: '/system/smtp',
+  getParentRoute: () => AuthenticatedRouteRoute,
+} as any)
+const AuthenticatedSystemSettingsRoute =
+  AuthenticatedSystemSettingsRouteImport.update({
+    id: '/system/settings',
+    path: '/system/settings',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSystemRequestLogRoute =
+  AuthenticatedSystemRequestLogRouteImport.update({
+    id: '/system/request-log',
+    path: '/system/request-log',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSystemQueuesRoute =
+  AuthenticatedSystemQueuesRouteImport.update({
+    id: '/system/queues',
+    path: '/system/queues',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSystemHealthRoute =
+  AuthenticatedSystemHealthRouteImport.update({
+    id: '/system/health',
+    path: '/system/health',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSystemFeatureFlagsRoute =
+  AuthenticatedSystemFeatureFlagsRouteImport.update({
+    id: '/system/feature-flags',
+    path: '/system/feature-flags',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedSubscriptionsNewRoute =
   AuthenticatedSubscriptionsNewRouteImport.update({
     id: '/subscriptions/new',
@@ -354,6 +401,24 @@ const AuthenticatedSettingsAccountRoute =
     id: '/account',
     path: '/account',
     getParentRoute: () => AuthenticatedSettingsRouteRoute,
+  } as any)
+const AuthenticatedSecuritySsoRoute =
+  AuthenticatedSecuritySsoRouteImport.update({
+    id: '/security/sso',
+    path: '/security/sso',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSecuritySessionsRoute =
+  AuthenticatedSecuritySessionsRouteImport.update({
+    id: '/security/sessions',
+    path: '/security/sessions',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedSecurityIpRulesRoute =
+  AuthenticatedSecurityIpRulesRouteImport.update({
+    id: '/security/ip-rules',
+    path: '/security/ip-rules',
+    getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
 const AuthenticatedRolesNewRoute = AuthenticatedRolesNewRouteImport.update({
   id: '/roles/new',
@@ -463,6 +528,18 @@ const AuthenticatedBillingPaymentsRoute =
     path: '/billing/payments',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedBillingInvoicesRoute =
+  AuthenticatedBillingInvoicesRouteImport.update({
+    id: '/billing/invoices',
+    path: '/billing/invoices',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
+const AuthenticatedBillingDashboardRoute =
+  AuthenticatedBillingDashboardRouteImport.update({
+    id: '/billing/dashboard',
+    path: '/billing/dashboard',
+    getParentRoute: () => AuthenticatedRouteRoute,
+  } as any)
 const AuthenticatedApiKeysNewRoute = AuthenticatedApiKeysNewRouteImport.update({
   id: '/api-keys/new',
   path: '/api-keys/new',
@@ -503,6 +580,12 @@ const AuthenticatedCompliancePoliciesIdRoute =
     path: '/compliance/policies/$id',
     getParentRoute: () => AuthenticatedRouteRoute,
   } as any)
+const AuthenticatedBillingInvoicesIdRoute =
+  AuthenticatedBillingInvoicesIdRouteImport.update({
+    id: '/$id',
+    path: '/$id',
+    getParentRoute: () => AuthenticatedBillingInvoicesRoute,
+  } as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthenticatedIndexRoute
@@ -522,6 +605,8 @@ export interface FileRoutesByFullPath {
   '/503': typeof errors503Route
   '/api-keys/$id': typeof AuthenticatedApiKeysIdRoute
   '/api-keys/new': typeof AuthenticatedApiKeysNewRoute
+  '/billing/dashboard': typeof AuthenticatedBillingDashboardRoute
+  '/billing/invoices': typeof AuthenticatedBillingInvoicesRouteWithChildren
   '/billing/payments': typeof AuthenticatedBillingPaymentsRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/groups/$id': typeof AuthenticatedGroupsIdRoute
@@ -541,12 +626,21 @@ export interface FileRoutesByFullPath {
   '/reports/new': typeof AuthenticatedReportsNewRoute
   '/roles/$id': typeof AuthenticatedRolesIdRoute
   '/roles/new': typeof AuthenticatedRolesNewRoute
+  '/security/ip-rules': typeof AuthenticatedSecurityIpRulesRoute
+  '/security/sessions': typeof AuthenticatedSecuritySessionsRoute
+  '/security/sso': typeof AuthenticatedSecuritySsoRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/subscriptions/$id': typeof AuthenticatedSubscriptionsIdRoute
   '/subscriptions/new': typeof AuthenticatedSubscriptionsNewRoute
+  '/system/feature-flags': typeof AuthenticatedSystemFeatureFlagsRoute
+  '/system/health': typeof AuthenticatedSystemHealthRoute
+  '/system/queues': typeof AuthenticatedSystemQueuesRoute
+  '/system/request-log': typeof AuthenticatedSystemRequestLogRoute
+  '/system/settings': typeof AuthenticatedSystemSettingsRoute
+  '/system/smtp': typeof AuthenticatedSystemSmtpRoute
   '/tenants/$id': typeof AuthenticatedTenantsIdRoute
   '/tenants/new': typeof AuthenticatedTenantsNewRoute
   '/tenants/plans': typeof AuthenticatedTenantsPlansRoute
@@ -574,6 +668,7 @@ export interface FileRoutesByFullPath {
   '/tenants/': typeof AuthenticatedTenantsIndexRoute
   '/users/': typeof AuthenticatedUsersIndexRoute
   '/webhooks/': typeof AuthenticatedWebhooksIndexRoute
+  '/billing/invoices/$id': typeof AuthenticatedBillingInvoicesIdRoute
   '/compliance/policies/$id': typeof AuthenticatedCompliancePoliciesIdRoute
   '/compliance/policies/new': typeof AuthenticatedCompliancePoliciesNewRoute
   '/compliance/retention-policies/$id': typeof AuthenticatedComplianceRetentionPoliciesIdRoute
@@ -597,6 +692,8 @@ export interface FileRoutesByTo {
   '/': typeof AuthenticatedIndexRoute
   '/api-keys/$id': typeof AuthenticatedApiKeysIdRoute
   '/api-keys/new': typeof AuthenticatedApiKeysNewRoute
+  '/billing/dashboard': typeof AuthenticatedBillingDashboardRoute
+  '/billing/invoices': typeof AuthenticatedBillingInvoicesRouteWithChildren
   '/billing/payments': typeof AuthenticatedBillingPaymentsRoute
   '/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/groups/$id': typeof AuthenticatedGroupsIdRoute
@@ -616,12 +713,21 @@ export interface FileRoutesByTo {
   '/reports/new': typeof AuthenticatedReportsNewRoute
   '/roles/$id': typeof AuthenticatedRolesIdRoute
   '/roles/new': typeof AuthenticatedRolesNewRoute
+  '/security/ip-rules': typeof AuthenticatedSecurityIpRulesRoute
+  '/security/sessions': typeof AuthenticatedSecuritySessionsRoute
+  '/security/sso': typeof AuthenticatedSecuritySsoRoute
   '/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/subscriptions/$id': typeof AuthenticatedSubscriptionsIdRoute
   '/subscriptions/new': typeof AuthenticatedSubscriptionsNewRoute
+  '/system/feature-flags': typeof AuthenticatedSystemFeatureFlagsRoute
+  '/system/health': typeof AuthenticatedSystemHealthRoute
+  '/system/queues': typeof AuthenticatedSystemQueuesRoute
+  '/system/request-log': typeof AuthenticatedSystemRequestLogRoute
+  '/system/settings': typeof AuthenticatedSystemSettingsRoute
+  '/system/smtp': typeof AuthenticatedSystemSmtpRoute
   '/tenants/$id': typeof AuthenticatedTenantsIdRoute
   '/tenants/new': typeof AuthenticatedTenantsNewRoute
   '/tenants/plans': typeof AuthenticatedTenantsPlansRoute
@@ -649,6 +755,7 @@ export interface FileRoutesByTo {
   '/tenants': typeof AuthenticatedTenantsIndexRoute
   '/users': typeof AuthenticatedUsersIndexRoute
   '/webhooks': typeof AuthenticatedWebhooksIndexRoute
+  '/billing/invoices/$id': typeof AuthenticatedBillingInvoicesIdRoute
   '/compliance/policies/$id': typeof AuthenticatedCompliancePoliciesIdRoute
   '/compliance/policies/new': typeof AuthenticatedCompliancePoliciesNewRoute
   '/compliance/retention-policies/$id': typeof AuthenticatedComplianceRetentionPoliciesIdRoute
@@ -675,6 +782,8 @@ export interface FileRoutesById {
   '/_authenticated/': typeof AuthenticatedIndexRoute
   '/_authenticated/api-keys/$id': typeof AuthenticatedApiKeysIdRoute
   '/_authenticated/api-keys/new': typeof AuthenticatedApiKeysNewRoute
+  '/_authenticated/billing/dashboard': typeof AuthenticatedBillingDashboardRoute
+  '/_authenticated/billing/invoices': typeof AuthenticatedBillingInvoicesRouteWithChildren
   '/_authenticated/billing/payments': typeof AuthenticatedBillingPaymentsRoute
   '/_authenticated/errors/$error': typeof AuthenticatedErrorsErrorRoute
   '/_authenticated/groups/$id': typeof AuthenticatedGroupsIdRoute
@@ -694,12 +803,21 @@ export interface FileRoutesById {
   '/_authenticated/reports/new': typeof AuthenticatedReportsNewRoute
   '/_authenticated/roles/$id': typeof AuthenticatedRolesIdRoute
   '/_authenticated/roles/new': typeof AuthenticatedRolesNewRoute
+  '/_authenticated/security/ip-rules': typeof AuthenticatedSecurityIpRulesRoute
+  '/_authenticated/security/sessions': typeof AuthenticatedSecuritySessionsRoute
+  '/_authenticated/security/sso': typeof AuthenticatedSecuritySsoRoute
   '/_authenticated/settings/account': typeof AuthenticatedSettingsAccountRoute
   '/_authenticated/settings/appearance': typeof AuthenticatedSettingsAppearanceRoute
   '/_authenticated/settings/display': typeof AuthenticatedSettingsDisplayRoute
   '/_authenticated/settings/notifications': typeof AuthenticatedSettingsNotificationsRoute
   '/_authenticated/subscriptions/$id': typeof AuthenticatedSubscriptionsIdRoute
   '/_authenticated/subscriptions/new': typeof AuthenticatedSubscriptionsNewRoute
+  '/_authenticated/system/feature-flags': typeof AuthenticatedSystemFeatureFlagsRoute
+  '/_authenticated/system/health': typeof AuthenticatedSystemHealthRoute
+  '/_authenticated/system/queues': typeof AuthenticatedSystemQueuesRoute
+  '/_authenticated/system/request-log': typeof AuthenticatedSystemRequestLogRoute
+  '/_authenticated/system/settings': typeof AuthenticatedSystemSettingsRoute
+  '/_authenticated/system/smtp': typeof AuthenticatedSystemSmtpRoute
   '/_authenticated/tenants/$id': typeof AuthenticatedTenantsIdRoute
   '/_authenticated/tenants/new': typeof AuthenticatedTenantsNewRoute
   '/_authenticated/tenants/plans': typeof AuthenticatedTenantsPlansRoute
@@ -727,6 +845,7 @@ export interface FileRoutesById {
   '/_authenticated/tenants/': typeof AuthenticatedTenantsIndexRoute
   '/_authenticated/users/': typeof AuthenticatedUsersIndexRoute
   '/_authenticated/webhooks/': typeof AuthenticatedWebhooksIndexRoute
+  '/_authenticated/billing/invoices/$id': typeof AuthenticatedBillingInvoicesIdRoute
   '/_authenticated/compliance/policies/$id': typeof AuthenticatedCompliancePoliciesIdRoute
   '/_authenticated/compliance/policies/new': typeof AuthenticatedCompliancePoliciesNewRoute
   '/_authenticated/compliance/retention-policies/$id': typeof AuthenticatedComplianceRetentionPoliciesIdRoute
@@ -753,6 +872,8 @@ export interface FileRouteTypes {
     | '/503'
     | '/api-keys/$id'
     | '/api-keys/new'
+    | '/billing/dashboard'
+    | '/billing/invoices'
     | '/billing/payments'
     | '/errors/$error'
     | '/groups/$id'
@@ -772,12 +893,21 @@ export interface FileRouteTypes {
     | '/reports/new'
     | '/roles/$id'
     | '/roles/new'
+    | '/security/ip-rules'
+    | '/security/sessions'
+    | '/security/sso'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
     | '/subscriptions/$id'
     | '/subscriptions/new'
+    | '/system/feature-flags'
+    | '/system/health'
+    | '/system/queues'
+    | '/system/request-log'
+    | '/system/settings'
+    | '/system/smtp'
     | '/tenants/$id'
     | '/tenants/new'
     | '/tenants/plans'
@@ -805,6 +935,7 @@ export interface FileRouteTypes {
     | '/tenants/'
     | '/users/'
     | '/webhooks/'
+    | '/billing/invoices/$id'
     | '/compliance/policies/$id'
     | '/compliance/policies/new'
     | '/compliance/retention-policies/$id'
@@ -828,6 +959,8 @@ export interface FileRouteTypes {
     | '/'
     | '/api-keys/$id'
     | '/api-keys/new'
+    | '/billing/dashboard'
+    | '/billing/invoices'
     | '/billing/payments'
     | '/errors/$error'
     | '/groups/$id'
@@ -847,12 +980,21 @@ export interface FileRouteTypes {
     | '/reports/new'
     | '/roles/$id'
     | '/roles/new'
+    | '/security/ip-rules'
+    | '/security/sessions'
+    | '/security/sso'
     | '/settings/account'
     | '/settings/appearance'
     | '/settings/display'
     | '/settings/notifications'
     | '/subscriptions/$id'
     | '/subscriptions/new'
+    | '/system/feature-flags'
+    | '/system/health'
+    | '/system/queues'
+    | '/system/request-log'
+    | '/system/settings'
+    | '/system/smtp'
     | '/tenants/$id'
     | '/tenants/new'
     | '/tenants/plans'
@@ -880,6 +1022,7 @@ export interface FileRouteTypes {
     | '/tenants'
     | '/users'
     | '/webhooks'
+    | '/billing/invoices/$id'
     | '/compliance/policies/$id'
     | '/compliance/policies/new'
     | '/compliance/retention-policies/$id'
@@ -905,6 +1048,8 @@ export interface FileRouteTypes {
     | '/_authenticated/'
     | '/_authenticated/api-keys/$id'
     | '/_authenticated/api-keys/new'
+    | '/_authenticated/billing/dashboard'
+    | '/_authenticated/billing/invoices'
     | '/_authenticated/billing/payments'
     | '/_authenticated/errors/$error'
     | '/_authenticated/groups/$id'
@@ -924,12 +1069,21 @@ export interface FileRouteTypes {
     | '/_authenticated/reports/new'
     | '/_authenticated/roles/$id'
     | '/_authenticated/roles/new'
+    | '/_authenticated/security/ip-rules'
+    | '/_authenticated/security/sessions'
+    | '/_authenticated/security/sso'
     | '/_authenticated/settings/account'
     | '/_authenticated/settings/appearance'
     | '/_authenticated/settings/display'
     | '/_authenticated/settings/notifications'
     | '/_authenticated/subscriptions/$id'
     | '/_authenticated/subscriptions/new'
+    | '/_authenticated/system/feature-flags'
+    | '/_authenticated/system/health'
+    | '/_authenticated/system/queues'
+    | '/_authenticated/system/request-log'
+    | '/_authenticated/system/settings'
+    | '/_authenticated/system/smtp'
     | '/_authenticated/tenants/$id'
     | '/_authenticated/tenants/new'
     | '/_authenticated/tenants/plans'
@@ -957,6 +1111,7 @@ export interface FileRouteTypes {
     | '/_authenticated/tenants/'
     | '/_authenticated/users/'
     | '/_authenticated/webhooks/'
+    | '/_authenticated/billing/invoices/$id'
     | '/_authenticated/compliance/policies/$id'
     | '/_authenticated/compliance/policies/new'
     | '/_authenticated/compliance/retention-policies/$id'
@@ -1284,6 +1439,48 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedTenantsIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/system/smtp': {
+      id: '/_authenticated/system/smtp'
+      path: '/system/smtp'
+      fullPath: '/system/smtp'
+      preLoaderRoute: typeof AuthenticatedSystemSmtpRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/system/settings': {
+      id: '/_authenticated/system/settings'
+      path: '/system/settings'
+      fullPath: '/system/settings'
+      preLoaderRoute: typeof AuthenticatedSystemSettingsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/system/request-log': {
+      id: '/_authenticated/system/request-log'
+      path: '/system/request-log'
+      fullPath: '/system/request-log'
+      preLoaderRoute: typeof AuthenticatedSystemRequestLogRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/system/queues': {
+      id: '/_authenticated/system/queues'
+      path: '/system/queues'
+      fullPath: '/system/queues'
+      preLoaderRoute: typeof AuthenticatedSystemQueuesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/system/health': {
+      id: '/_authenticated/system/health'
+      path: '/system/health'
+      fullPath: '/system/health'
+      preLoaderRoute: typeof AuthenticatedSystemHealthRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/system/feature-flags': {
+      id: '/_authenticated/system/feature-flags'
+      path: '/system/feature-flags'
+      fullPath: '/system/feature-flags'
+      preLoaderRoute: typeof AuthenticatedSystemFeatureFlagsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/subscriptions/new': {
       id: '/_authenticated/subscriptions/new'
       path: '/subscriptions/new'
@@ -1325,6 +1522,27 @@ declare module '@tanstack/react-router' {
       fullPath: '/settings/account'
       preLoaderRoute: typeof AuthenticatedSettingsAccountRouteImport
       parentRoute: typeof AuthenticatedSettingsRouteRoute
+    }
+    '/_authenticated/security/sso': {
+      id: '/_authenticated/security/sso'
+      path: '/security/sso'
+      fullPath: '/security/sso'
+      preLoaderRoute: typeof AuthenticatedSecuritySsoRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/security/sessions': {
+      id: '/_authenticated/security/sessions'
+      path: '/security/sessions'
+      fullPath: '/security/sessions'
+      preLoaderRoute: typeof AuthenticatedSecuritySessionsRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/security/ip-rules': {
+      id: '/_authenticated/security/ip-rules'
+      path: '/security/ip-rules'
+      fullPath: '/security/ip-rules'
+      preLoaderRoute: typeof AuthenticatedSecurityIpRulesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
     }
     '/_authenticated/roles/new': {
       id: '/_authenticated/roles/new'
@@ -1459,6 +1677,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedBillingPaymentsRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/billing/invoices': {
+      id: '/_authenticated/billing/invoices'
+      path: '/billing/invoices'
+      fullPath: '/billing/invoices'
+      preLoaderRoute: typeof AuthenticatedBillingInvoicesRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
+    '/_authenticated/billing/dashboard': {
+      id: '/_authenticated/billing/dashboard'
+      path: '/billing/dashboard'
+      fullPath: '/billing/dashboard'
+      preLoaderRoute: typeof AuthenticatedBillingDashboardRouteImport
+      parentRoute: typeof AuthenticatedRouteRoute
+    }
     '/_authenticated/api-keys/new': {
       id: '/_authenticated/api-keys/new'
       path: '/api-keys/new'
@@ -1508,6 +1740,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthenticatedCompliancePoliciesIdRouteImport
       parentRoute: typeof AuthenticatedRouteRoute
     }
+    '/_authenticated/billing/invoices/$id': {
+      id: '/_authenticated/billing/invoices/$id'
+      path: '/$id'
+      fullPath: '/billing/invoices/$id'
+      preLoaderRoute: typeof AuthenticatedBillingInvoicesIdRouteImport
+      parentRoute: typeof AuthenticatedBillingInvoicesRoute
+    }
   }
 }
 
@@ -1534,11 +1773,27 @@ const AuthenticatedSettingsRouteRouteWithChildren =
     AuthenticatedSettingsRouteRouteChildren,
   )
 
+interface AuthenticatedBillingInvoicesRouteChildren {
+  AuthenticatedBillingInvoicesIdRoute: typeof AuthenticatedBillingInvoicesIdRoute
+}
+
+const AuthenticatedBillingInvoicesRouteChildren: AuthenticatedBillingInvoicesRouteChildren =
+  {
+    AuthenticatedBillingInvoicesIdRoute: AuthenticatedBillingInvoicesIdRoute,
+  }
+
+const AuthenticatedBillingInvoicesRouteWithChildren =
+  AuthenticatedBillingInvoicesRoute._addFileChildren(
+    AuthenticatedBillingInvoicesRouteChildren,
+  )
+
 interface AuthenticatedRouteRouteChildren {
   AuthenticatedSettingsRouteRoute: typeof AuthenticatedSettingsRouteRouteWithChildren
   AuthenticatedIndexRoute: typeof AuthenticatedIndexRoute
   AuthenticatedApiKeysIdRoute: typeof AuthenticatedApiKeysIdRoute
   AuthenticatedApiKeysNewRoute: typeof AuthenticatedApiKeysNewRoute
+  AuthenticatedBillingDashboardRoute: typeof AuthenticatedBillingDashboardRoute
+  AuthenticatedBillingInvoicesRoute: typeof AuthenticatedBillingInvoicesRouteWithChildren
   AuthenticatedBillingPaymentsRoute: typeof AuthenticatedBillingPaymentsRoute
   AuthenticatedErrorsErrorRoute: typeof AuthenticatedErrorsErrorRoute
   AuthenticatedGroupsIdRoute: typeof AuthenticatedGroupsIdRoute
@@ -1558,8 +1813,17 @@ interface AuthenticatedRouteRouteChildren {
   AuthenticatedReportsNewRoute: typeof AuthenticatedReportsNewRoute
   AuthenticatedRolesIdRoute: typeof AuthenticatedRolesIdRoute
   AuthenticatedRolesNewRoute: typeof AuthenticatedRolesNewRoute
+  AuthenticatedSecurityIpRulesRoute: typeof AuthenticatedSecurityIpRulesRoute
+  AuthenticatedSecuritySessionsRoute: typeof AuthenticatedSecuritySessionsRoute
+  AuthenticatedSecuritySsoRoute: typeof AuthenticatedSecuritySsoRoute
   AuthenticatedSubscriptionsIdRoute: typeof AuthenticatedSubscriptionsIdRoute
   AuthenticatedSubscriptionsNewRoute: typeof AuthenticatedSubscriptionsNewRoute
+  AuthenticatedSystemFeatureFlagsRoute: typeof AuthenticatedSystemFeatureFlagsRoute
+  AuthenticatedSystemHealthRoute: typeof AuthenticatedSystemHealthRoute
+  AuthenticatedSystemQueuesRoute: typeof AuthenticatedSystemQueuesRoute
+  AuthenticatedSystemRequestLogRoute: typeof AuthenticatedSystemRequestLogRoute
+  AuthenticatedSystemSettingsRoute: typeof AuthenticatedSystemSettingsRoute
+  AuthenticatedSystemSmtpRoute: typeof AuthenticatedSystemSmtpRoute
   AuthenticatedTenantsIdRoute: typeof AuthenticatedTenantsIdRoute
   AuthenticatedTenantsNewRoute: typeof AuthenticatedTenantsNewRoute
   AuthenticatedTenantsPlansRoute: typeof AuthenticatedTenantsPlansRoute
@@ -1598,6 +1862,9 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedIndexRoute: AuthenticatedIndexRoute,
   AuthenticatedApiKeysIdRoute: AuthenticatedApiKeysIdRoute,
   AuthenticatedApiKeysNewRoute: AuthenticatedApiKeysNewRoute,
+  AuthenticatedBillingDashboardRoute: AuthenticatedBillingDashboardRoute,
+  AuthenticatedBillingInvoicesRoute:
+    AuthenticatedBillingInvoicesRouteWithChildren,
   AuthenticatedBillingPaymentsRoute: AuthenticatedBillingPaymentsRoute,
   AuthenticatedErrorsErrorRoute: AuthenticatedErrorsErrorRoute,
   AuthenticatedGroupsIdRoute: AuthenticatedGroupsIdRoute,
@@ -1621,8 +1888,17 @@ const AuthenticatedRouteRouteChildren: AuthenticatedRouteRouteChildren = {
   AuthenticatedReportsNewRoute: AuthenticatedReportsNewRoute,
   AuthenticatedRolesIdRoute: AuthenticatedRolesIdRoute,
   AuthenticatedRolesNewRoute: AuthenticatedRolesNewRoute,
+  AuthenticatedSecurityIpRulesRoute: AuthenticatedSecurityIpRulesRoute,
+  AuthenticatedSecuritySessionsRoute: AuthenticatedSecuritySessionsRoute,
+  AuthenticatedSecuritySsoRoute: AuthenticatedSecuritySsoRoute,
   AuthenticatedSubscriptionsIdRoute: AuthenticatedSubscriptionsIdRoute,
   AuthenticatedSubscriptionsNewRoute: AuthenticatedSubscriptionsNewRoute,
+  AuthenticatedSystemFeatureFlagsRoute: AuthenticatedSystemFeatureFlagsRoute,
+  AuthenticatedSystemHealthRoute: AuthenticatedSystemHealthRoute,
+  AuthenticatedSystemQueuesRoute: AuthenticatedSystemQueuesRoute,
+  AuthenticatedSystemRequestLogRoute: AuthenticatedSystemRequestLogRoute,
+  AuthenticatedSystemSettingsRoute: AuthenticatedSystemSettingsRoute,
+  AuthenticatedSystemSmtpRoute: AuthenticatedSystemSmtpRoute,
   AuthenticatedTenantsIdRoute: AuthenticatedTenantsIdRoute,
   AuthenticatedTenantsNewRoute: AuthenticatedTenantsNewRoute,
   AuthenticatedTenantsPlansRoute: AuthenticatedTenantsPlansRoute,

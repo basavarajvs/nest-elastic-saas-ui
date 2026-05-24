@@ -1,6 +1,6 @@
 import { useState } from 'react'
 import { useQuery } from '@tanstack/react-query'
-import { Link } from '@tanstack/react-router'
+import { useNavigate } from '@tanstack/react-router'
 import { format } from 'date-fns'
 import {
   Download,
@@ -91,6 +91,7 @@ const STATUS_COLORS: Record<string, string> = {
 }
 
 export function InvoicesListPage() {
+  const navigate = useNavigate()
   const [selectedTenant, setSelectedTenant] = useState<string>('')
   const [search, setSearch] = useState('')
 
@@ -162,7 +163,7 @@ export function InvoicesListPage() {
             <EmptyState
               title='Select a tenant'
               description='Please select a tenant from the dropdown above to view their invoices.'
-              icon={Search}
+              icon={<Search className='h-10 w-10' />}
             />
           ) : loadingInvoices ? (
             <LoadingState />
@@ -213,10 +214,8 @@ export function InvoicesListPage() {
                         </TableCell>
                         <TableCell className='text-right'>
                           <div className='flex justify-end space-x-2'>
-                            <Button variant='ghost' size='icon' asChild>
-                              <Link to={`/billing/invoices/${invoice.id}`} search={{ tenantId: selectedTenant }}>
-                                <Eye className='h-4 w-4 text-muted-foreground' />
-                              </Link>
+                            <Button variant='ghost' size='icon' onClick={() => navigate({ to: '/billing/invoices/$id', params: { id: invoice.id }, search: { tenantId: selectedTenant } })}>
+                              <Eye className='h-4 w-4 text-muted-foreground' />
                             </Button>
                             <Button
                               variant='ghost'

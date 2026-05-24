@@ -82,6 +82,7 @@ export const sidebarData: SidebarData = {
       title: 'Billing',
       items: [
         { title: 'Dashboard', url: '/billing/dashboard', icon: LayoutDashboard, pattern: '^/billing/dashboard(/|$)' },
+        { title: 'Invoices', url: '/billing/invoices', icon: FileText, pattern: '^/billing/invoices(/|$)' },
         { title: 'License Plans', url: '/license-plans', icon: CreditCard, pattern: '^/license-plans(/|$)' },
         { title: 'Subscriptions', url: '/subscriptions', icon: Banknote, pattern: '^/subscriptions(/|$)' },
         { title: 'Payments', url: '/billing/payments', icon: Banknote, pattern: '^/billing/payments(/|$)' },
@@ -90,6 +91,7 @@ export const sidebarData: SidebarData = {
     {
       title: 'System',
       items: [
+        { title: 'System Settings', url: '/system', icon: Settings, pattern: '^/system(/|$)' },
         { title: 'Global Settings', url: '/system/settings', icon: Settings2, pattern: '^/system/settings(/|$)' },
         { title: 'Queue Monitor', url: '/system/queues', icon: Server, pattern: '^/system/queues(/|$)' },
         { title: 'Request Log', url: '/system/request-log', icon: ScrollText, pattern: '^/system/request-log(/|$)' },
@@ -99,6 +101,8 @@ export const sidebarData: SidebarData = {
         { title: 'Integrations', url: '/system/integrations', icon: Puzzle, pattern: '^/system/integrations(/|$)' },
         { title: 'SMTP', url: '/system/smtp', icon: Mail, pattern: '^/system/smtp(/|$)' },
         { title: 'Feature Flags', url: '/system/feature-flags', icon: Settings2, pattern: '^/system/feature-flags(/|$)' },
+        { title: 'Tenant Settings', url: '/tenant-settings', icon: Sliders, pattern: '^/tenant-settings(/|$)' },
+        { title: 'Reports', url: '/reports', icon: FileText, pattern: '^/reports(/|$)' },
       ],
     },
     {
@@ -117,14 +121,6 @@ export const sidebarData: SidebarData = {
         { title: 'IP Rules', url: '/security/ip-rules', icon: ShieldAlert, pattern: '^/security/ip-rules(/|$)' },
         { title: 'Compliance', url: '/compliance', icon: ShieldCheck, pattern: '^/compliance(/|$)' },
         { title: 'Resource Quotas', url: '/quotas', icon: Gauge, pattern: '^/quotas(/|$)' },
-      ],
-    },
-    {
-      title: 'System',
-      items: [
-        { title: 'System Settings', url: '/system', icon: Settings, pattern: '^/system(/|$)' },
-        { title: 'Tenant Settings', url: '/tenant-settings', icon: Sliders, pattern: '^/tenant-settings(/|$)' },
-        { title: 'Reports', url: '/reports', icon: FileText, pattern: '^/reports(/|$)' },
       ],
     },
     {

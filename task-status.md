@@ -30,7 +30,7 @@
 - [x] Enhance `src/pages/users/user-detail.tsx` with edit/delete/resetPin
 
 ### 1.7 Session Management
-- [x] `src/pages/security/sessions.tsx`
+- [x] `src/pages/security/sessions.tsx` (stub — TokenController API not in generated client)
 - [x] `src/routes/_authenticated/security/sessions.tsx`
 - [x] Sidebar: add Security > Sessions
 

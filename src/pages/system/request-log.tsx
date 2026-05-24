@@ -4,7 +4,7 @@ import { RefreshCw } from 'lucide-react'
 import { SystemController_getRequestLog } from '@/lib/api/wms-saas-core-api/system/system'
 import { PageHeader, LoadingState, ErrorState } from '@/components/common'
 import { Button } from '@/components/ui/button'
-import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card'
+import { Card, CardContent, CardHeader } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import {
   Table,
