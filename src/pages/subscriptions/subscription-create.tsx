@@ -53,8 +53,8 @@ export function CreateSubscriptionPage() {
     queryKey: ['billing-plans', 'active'],
     queryFn: async () => {
       const res = await PlanController_findAll({ includeInactive: 'false' })
-      const body = res as unknown as { data: Array<{ planId: string; planName: string; price?: number }> }
-      return (body.data ?? []).map((p) => ({ id: p.planId, planName: p.planName, price: p.price }))
+      const body = res as unknown as { data: Array<{ id: string; planName: string; price?: number }> }
+      return (body.data ?? []).map((p) => ({ id: p.id, planName: p.planName, price: p.price }))
     },
     staleTime: 60_000,
   })

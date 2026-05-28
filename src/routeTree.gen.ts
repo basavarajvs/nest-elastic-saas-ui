@@ -23,6 +23,7 @@ import { Route as authSignUpRouteImport } from './routes/(auth)/sign-up'
 import { Route as authSignIn2RouteImport } from './routes/(auth)/sign-in-2'
 import { Route as authSignInRouteImport } from './routes/(auth)/sign-in'
 import { Route as authOtpRouteImport } from './routes/(auth)/otp'
+import { Route as authLoginRouteImport } from './routes/(auth)/login'
 import { Route as authForgotPasswordRouteImport } from './routes/(auth)/forgot-password'
 import { Route as AuthenticatedSettingsRouteRouteImport } from './routes/_authenticated/settings/route'
 import { Route as AuthenticatedWebhooksIndexRouteImport } from './routes/_authenticated/webhooks/index'
@@ -164,6 +165,11 @@ const authSignInRoute = authSignInRouteImport.update({
 const authOtpRoute = authOtpRouteImport.update({
   id: '/(auth)/otp',
   path: '/otp',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const authLoginRoute = authLoginRouteImport.update({
+  id: '/(auth)/login',
+  path: '/login',
   getParentRoute: () => rootRouteImport,
 } as any)
 const authForgotPasswordRoute = authForgotPasswordRouteImport.update({
@@ -594,6 +600,7 @@ export interface FileRoutesByFullPath {
   '/verify-email': typeof VerifyEmailRoute
   '/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/forgot-password': typeof authForgotPasswordRoute
+  '/login': typeof authLoginRoute
   '/otp': typeof authOtpRoute
   '/sign-in': typeof authSignInRoute
   '/sign-in-2': typeof authSignIn2Route
@@ -680,6 +687,7 @@ export interface FileRoutesByTo {
   '/reset-password': typeof ResetPasswordRoute
   '/verify-email': typeof VerifyEmailRoute
   '/forgot-password': typeof authForgotPasswordRoute
+  '/login': typeof authLoginRoute
   '/otp': typeof authOtpRoute
   '/sign-in': typeof authSignInRoute
   '/sign-in-2': typeof authSignIn2Route
@@ -770,6 +778,7 @@ export interface FileRoutesById {
   '/verify-email': typeof VerifyEmailRoute
   '/_authenticated/settings': typeof AuthenticatedSettingsRouteRouteWithChildren
   '/(auth)/forgot-password': typeof authForgotPasswordRoute
+  '/(auth)/login': typeof authLoginRoute
   '/(auth)/otp': typeof authOtpRoute
   '/(auth)/sign-in': typeof authSignInRoute
   '/(auth)/sign-in-2': typeof authSignIn2Route
@@ -861,6 +870,7 @@ export interface FileRouteTypes {
     | '/verify-email'
     | '/settings'
     | '/forgot-password'
+    | '/login'
     | '/otp'
     | '/sign-in'
     | '/sign-in-2'
@@ -947,6 +957,7 @@ export interface FileRouteTypes {
     | '/reset-password'
     | '/verify-email'
     | '/forgot-password'
+    | '/login'
     | '/otp'
     | '/sign-in'
     | '/sign-in-2'
@@ -1036,6 +1047,7 @@ export interface FileRouteTypes {
     | '/verify-email'
     | '/_authenticated/settings'
     | '/(auth)/forgot-password'
+    | '/(auth)/login'
     | '/(auth)/otp'
     | '/(auth)/sign-in'
     | '/(auth)/sign-in-2'
@@ -1125,6 +1137,7 @@ export interface RootRouteChildren {
   ResetPasswordRoute: typeof ResetPasswordRoute
   VerifyEmailRoute: typeof VerifyEmailRoute
   authForgotPasswordRoute: typeof authForgotPasswordRoute
+  authLoginRoute: typeof authLoginRoute
   authOtpRoute: typeof authOtpRoute
   authSignInRoute: typeof authSignInRoute
   authSignIn2Route: typeof authSignIn2Route
@@ -1234,6 +1247,13 @@ declare module '@tanstack/react-router' {
       path: '/otp'
       fullPath: '/otp'
       preLoaderRoute: typeof authOtpRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/(auth)/login': {
+      id: '/(auth)/login'
+      path: '/login'
+      fullPath: '/login'
+      preLoaderRoute: typeof authLoginRouteImport
       parentRoute: typeof rootRouteImport
     }
     '/(auth)/forgot-password': {
@@ -1947,6 +1967,7 @@ const rootRouteChildren: RootRouteChildren = {
   ResetPasswordRoute: ResetPasswordRoute,
   VerifyEmailRoute: VerifyEmailRoute,
   authForgotPasswordRoute: authForgotPasswordRoute,
+  authLoginRoute: authLoginRoute,
   authOtpRoute: authOtpRoute,
   authSignInRoute: authSignInRoute,
   authSignIn2Route: authSignIn2Route,

@@ -52,7 +52,8 @@ function usePlans() {
     queryKey: ['plans', 'list'],
     queryFn: async () => {
       const res = await PlanController_findAll({ includeInactive: 'false' })
-      return (res as unknown as { data: Array<{ id: string; name: string }> }).data ?? []
+      const body = res as unknown as { data: Array<{ planId: string; planName: string }> }
+      return (body.data ?? []).map((p) => ({ id: p.planId, name: p.planName }))
     },
     staleTime: 60_000,
   })
@@ -219,9 +220,20 @@ export function CreateTenantPage() {
                             London
                           </SelectItem>
                           <SelectItem value='Europe/Paris'>Paris</SelectItem>
-                          <SelectItem value='Asia/Tokyo'>Tokyo</SelectItem>
+                          <SelectItem value='Asia/Kolkata'>India (IST)</SelectItem>
                           <SelectItem value='Asia/Shanghai'>
-                            Shanghai
+                            China (CST)
+                          </SelectItem>
+                          <SelectItem value='Asia/Urumqi'>
+                            China (Xinjiang)
+                          </SelectItem>
+                          <SelectItem value='Asia/Tokyo'>Tokyo</SelectItem>
+                          <SelectItem value='Asia/Dubai'>Dubai</SelectItem>
+                          <SelectItem value='Asia/Singapore'>
+                            Singapore
+                          </SelectItem>
+                          <SelectItem value='Australia/Sydney'>
+                            Sydney
                           </SelectItem>
                         </SelectContent>
                       </Select>

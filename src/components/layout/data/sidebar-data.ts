@@ -19,9 +19,6 @@ import {
   Sliders,
   FileText,
   UserCog,
-  Wrench,
-  Palette,
-  Monitor,
   Server,
   Settings2,
   Heart,
@@ -128,15 +125,9 @@ export const sidebarData: SidebarData = {
       items: [
         {
           title: 'My Settings',
+          url: '/settings',
           icon: UserCog,
           pattern: '^/settings',
-          items: [
-            { title: 'Profile', url: '/settings', icon: UserCog, pattern: '^/settings$' },
-            { title: 'Account', url: '/settings/account', icon: Wrench, pattern: '^/settings/account(/|$)' },
-            { title: 'Appearance', url: '/settings/appearance', icon: Palette, pattern: '^/settings/appearance(/|$)' },
-            { title: 'Notifications', url: '/settings/notifications', icon: Bell, pattern: '^/settings/notifications(/|$)' },
-            { title: 'Display', url: '/settings/display', icon: Monitor, pattern: '^/settings/display(/|$)' },
-          ],
         },
       ],
     },
