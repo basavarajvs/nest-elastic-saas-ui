@@ -36,14 +36,6 @@ interface PermissionsManagerProps {
   inheritedPermissions?: AssignedPermission[]
 }
 
-interface PermissionItem {
-  id: string
-  permissionName: string
-  permissionCode: string
-  resourceType?: string
-  resourceAction?: string
-}
-
 export function PermissionsManager({
   open,
   onOpenChange,
@@ -61,7 +53,9 @@ export function PermissionsManager({
     queryKey: ['permissions', 'all'],
     queryFn: async () => {
       const res = await PermissionController_findAll({})
-      return (res as unknown as { data: PermissionItem[] }).data ?? []
+      const body = res as unknown as { data: { data: Array<{ permissionId: string; permissionName: string; permissionCode: string; resourceType?: string; resourceAction?: string }> } | Array<{ permissionId: string; permissionName: string; permissionCode: string; resourceType?: string; resourceAction?: string }> }
+      const raw: Array<{ permissionId: string; permissionName: string; permissionCode: string; resourceType?: string; resourceAction?: string }> = Array.isArray(body.data) ? body.data : (body.data as any)?.data ?? []
+      return raw.map((p) => ({ id: p.permissionId, permissionName: p.permissionName, permissionCode: p.permissionCode, resourceType: p.resourceType, resourceAction: p.resourceAction }))
     },
     enabled: open,
     staleTime: 30_000,

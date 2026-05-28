@@ -102,7 +102,7 @@ export function CreateNotificationTemplatePage() {
           body.variablesSchema = JSON.parse(values.variablesSchema)
         } catch { /* ignore invalid json */ }
       }
-      await TemplateController_create(body as RequestInit)
+      await TemplateController_create({ body: JSON.stringify(body) })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notification-templates'] })

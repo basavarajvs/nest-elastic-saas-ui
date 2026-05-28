@@ -157,7 +157,7 @@ export function NotificationTemplateDetailPage() {
       if (JSON.stringify(values.channels) !== JSON.stringify(template?.channels)) body.channels = values.channels
       if (values.isActive !== template?.isActive) body.isActive = values.isActive
       if (Object.keys(body).length === 0) return
-      await TemplateController_update(id, body as RequestInit)
+      await TemplateController_update(id, { body: JSON.stringify(body) })
     },
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ['notification-templates'] })

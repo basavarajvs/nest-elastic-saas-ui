@@ -50,17 +50,6 @@ import {
   AlertDialogHeader,
   AlertDialogTitle,
 } from '@/components/ui/alert-dialog'
-interface Role {
-  id: string
-  roleName: string
-  roleCode: string
-  roleType?: 'system' | 'tenant' | 'user'
-  roleDescription?: string
-  isActive?: boolean
-  isDeleted?: boolean
-  parentRoleId?: string
-  createdAt: string
-}
 
 interface PaginationMeta {
   total: number
@@ -94,7 +83,11 @@ function useRoles(page: number, limit: number, search: string, typeFilter: strin
       if (search) params.search = search
       if (typeFilter) params.roleType = typeFilter
       const res = await RoleController_findAll(params as never)
-      return res as unknown as { data: Role[]; meta: PaginationMeta }
+      const body = res as unknown as { data: Array<{ roleId: string; roleName: string; roleCode: string; roleType?: string; roleDescription?: string; isActive?: boolean; parentRoleId?: string; createdAt: string }>; meta: PaginationMeta }
+      return {
+        data: (body.data ?? []).map((r) => ({ ...r, id: r.roleId })),
+        meta: body.meta ?? { total: 0, page: 1, limit: 10 },
+      }
     },
     staleTime: 30_000,
   })
@@ -179,7 +172,8 @@ export function RolesPage() {
     queryKey: ['roles', 'all-for-hierarchy'],
     queryFn: async () => {
       const res = await RoleController_findAll({ page: 1, limit: 1000 } as never)
-      return (res as unknown as { data: Role[] }).data ?? []
+      const body = res as unknown as { data: Array<{ roleId: string; roleName: string; roleCode: string; roleType?: string; roleDescription?: string; isActive?: boolean; parentRoleId?: string; createdAt: string }> }
+      return (body.data ?? []).map((r) => ({ ...r, id: r.roleId }))
     },
     staleTime: 60_000,
     enabled: activeTab === 'hierarchy',

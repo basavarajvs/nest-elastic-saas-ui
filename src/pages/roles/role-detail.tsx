@@ -68,14 +68,6 @@ interface RoleDetail {
   }>
 }
 
-interface InheritedPermission {
-  id: string
-  permissionCode: string
-  permissionName: string
-  resourceType?: string
-  resourceAction?: string
-}
-
 const TYPE_STYLES: Record<string, string> = {
   system: 'bg-purple-100 text-purple-800 dark:bg-purple-900/30 dark:text-purple-400',
   tenant: 'bg-blue-100 text-blue-800 dark:bg-blue-900/30 dark:text-blue-400',
@@ -106,7 +98,17 @@ export function RoleDetailPage() {
     queryKey: ['roles', 'detail', roleId],
     queryFn: async () => {
       const res = await RoleController_findById(roleId)
-      return (res as unknown as { data: RoleDetail }).data
+      const body = res as unknown as { data: Record<string, unknown> }
+      const raw = body.data as Record<string, unknown>
+      if (!raw) return undefined
+      const permissions = (raw.permissions as Array<Record<string, unknown>> ?? []).map((p: Record<string, unknown>) => ({
+        id: p.permissionId,
+        permissionCode: p.permissionCode,
+        permissionName: p.permissionName,
+        resourceType: p.resourceType,
+        resourceAction: p.resourceAction,
+      }))
+      return { ...raw, id: raw.roleId, permissions } as unknown as RoleDetail
     },
     enabled: !!roleId,
     staleTime: 30_000,
@@ -116,7 +118,8 @@ export function RoleDetailPage() {
     queryKey: ['roles', 'inherited-permissions', roleId],
     queryFn: async () => {
       const res = await RoleController_getInheritedPermissions(roleId)
-      return (res as unknown as { data: InheritedPermission[] }).data ?? []
+      const body = res as unknown as { data: Array<{ permissionId: string; permissionCode: string; permissionName: string; resourceType?: string; resourceAction?: string }> }
+      return (body.data ?? []).map((p) => ({ id: p.permissionId, permissionCode: p.permissionCode, permissionName: p.permissionName, resourceType: p.resourceType, resourceAction: p.resourceAction }))
     },
     enabled: !!roleId,
     staleTime: 30_000,

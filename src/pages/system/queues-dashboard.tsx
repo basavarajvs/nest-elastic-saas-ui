@@ -56,7 +56,17 @@ export function QueuesDashboardPage() {
     queryKey: ['system', 'queues'],
     queryFn: async () => {
       const res = await SystemAdminController_getQueues()
-      return (res as unknown as { data: QueueStats[] }).data ?? []
+      const body = res as unknown as { data: Record<string, { waiting: number; active: number; failed: number }> }
+      const data = body.data ?? {}
+      return Object.entries(data).map(([name, stats]) => ({
+        name,
+        waiting: stats.waiting ?? 0,
+        active: stats.active ?? 0,
+        completed: 0,
+        failed: stats.failed ?? 0,
+        delayed: 0,
+        paused: false,
+      })) as QueueStats[]
     },
     refetchInterval: 30000, // Auto refresh every 30s
   })

@@ -27,8 +27,6 @@ import {
 import { Separator } from '@/components/ui/separator'
 import { Skeleton } from '@/components/ui/skeleton'
 
-interface TenantOption { id: string; tenantName: string }
-interface PlanOption { id: string; planName: string; price?: number; billingCycleDays?: number }
 
 export function CreateSubscriptionPage() {
   const navigate = useNavigate()
@@ -45,7 +43,8 @@ export function CreateSubscriptionPage() {
     queryKey: ['tenants', 'list-for-subscription'],
     queryFn: async () => {
       const res = await SystemAdminController_listTenants({ page: 1, limit: 200 })
-      return (res as unknown as { data: { data: TenantOption[] } }).data?.data ?? []
+      const body = res as unknown as { data: Array<{ tenantId: string; tenantName: string }> }
+      return (body.data ?? []).map((t) => ({ id: t.tenantId, tenantName: t.tenantName }))
     },
     staleTime: 60_000,
   })
@@ -54,7 +53,8 @@ export function CreateSubscriptionPage() {
     queryKey: ['billing-plans', 'active'],
     queryFn: async () => {
       const res = await PlanController_findAll({ includeInactive: 'false' })
-      return (res as unknown as { data: PlanOption[] }).data ?? []
+      const body = res as unknown as { data: Array<{ planId: string; planName: string; price?: number }> }
+      return (body.data ?? []).map((p) => ({ id: p.planId, planName: p.planName, price: p.price }))
     },
     staleTime: 60_000,
   })

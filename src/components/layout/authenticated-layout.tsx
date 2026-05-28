@@ -1,4 +1,4 @@
-import { Outlet } from '@tanstack/react-router'
+import { Outlet, useLocation } from '@tanstack/react-router'
 import { getCookie } from '@/lib/cookies'
 import { cn } from '@/lib/utils'
 import { LayoutProvider } from '@/context/layout-provider'
@@ -15,6 +15,7 @@ type AuthenticatedLayoutProps = {
 
 export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
   const defaultOpen = getCookie('sidebar_state') !== 'false'
+  const location = useLocation()
   return (
     <SearchProvider>
       <LayoutProvider>
@@ -24,13 +25,13 @@ export function AuthenticatedLayout({ children }: AuthenticatedLayoutProps) {
           <SidebarInset
             className={cn(
               '@container/content',
-              'has-data-[layout=fixed]:h-svh',
-              'peer-data-[variant=inset]:has-data-[layout=fixed]:h-[calc(100svh-(var(--spacing)*4))]'
+              'peer-data-[variant=inset]:has-data-[layout=fixed]:h-svh',
+              'peer-data-[variant=inset]:peer-data-[variant=inset]:has-data-[layout=fixed]:h-[calc(100svh-(var(--spacing)*4))]'
             )}
           >
             <Header fixed />
             <main className='flex-1 overflow-auto p-6'>
-              <ErrorBoundary>
+              <ErrorBoundary key={location.pathname}>
                 {children ?? <Outlet />}
               </ErrorBoundary>
             </main>

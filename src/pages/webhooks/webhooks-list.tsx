@@ -75,7 +75,11 @@ export function WebhooksPage() {
     queryKey: ['webhooks', 'endpoints'],
     queryFn: async () => {
       const res = await WebhookController_listEndpoints()
-      return (res as unknown as { data: WebhookEndpoint[] }).data ?? []
+      const body = res as unknown as { data: WebhookEndpoint[] }
+      return (body.data ?? []).map((ep) => ({
+        ...ep,
+        id: (ep as unknown as { endpointId: string }).endpointId,
+      }))
     },
     staleTime: 30_000,
   })

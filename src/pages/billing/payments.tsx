@@ -89,7 +89,11 @@ export function PaymentsPage() {
     queryKey: ['billing', 'subscriptions', 'all'],
     queryFn: async () => {
       const res = await SubscriptionController_findAll_v2()
-      return (res as unknown as { data: { id: string; tenantName?: string }[] }).data ?? []
+      const body = res as unknown as { data: Array<{ subscriptionId: string; status?: string; price?: number; currency?: string }> }
+      return (body.data ?? []).map((s) => ({
+        ...s,
+        id: s.subscriptionId,
+      }))
     },
     staleTime: 60_000,
   })
@@ -325,7 +329,9 @@ export function PaymentsPage() {
                 <SelectTrigger><SelectValue placeholder='Select subscription' /></SelectTrigger>
                 <SelectContent>
                   {subscriptions.data?.map(s => (
-                    <SelectItem key={s.id} value={s.id}>{s.tenantName ?? s.id}</SelectItem>
+                    <SelectItem key={s.id} value={s.id}>
+                      {`${s.status ?? 'active'} - ${s.currency ?? 'USD'} ${s.price ?? ''}`}
+                    </SelectItem>
                   ))}
                 </SelectContent>
               </Select>

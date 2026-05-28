@@ -130,7 +130,20 @@ function useUsers(page: number, limit: number, search: string, status: string, r
           sortOrder?: string
         },
       )
-      return res as unknown as { data: User[]; meta: PaginationMeta }
+      const body = res as unknown as { data: Array<Record<string, unknown>>; meta: PaginationMeta }
+      return {
+        data: (body.data ?? []).map((raw) => ({
+          id: raw.userId,
+          firstName: raw.firstName,
+          lastName: raw.lastName,
+          email: raw.email,
+          status: raw.status,
+          roles: ((raw.userRoles ?? raw.roles) as Array<Record<string, unknown>>)?.map((r: Record<string, unknown>) => ({ id: r.roleId ?? r.id, name: r.roleName ?? r.name })),
+          createdAt: raw.createdAt,
+          updatedAt: raw.updatedAt,
+        })) as User[],
+        meta: body.meta ?? { total: 0, page: 1, limit: 10 },
+      }
     },
     staleTime: 30_000,
   })
@@ -141,7 +154,8 @@ function useRoles() {
     queryKey: ['roles', 'list'],
     queryFn: async () => {
       const res = await RoleController_findAll({ includeSystem: 'true' })
-      return (res as unknown as { data: { id: string; name: string; code: string }[] }).data ?? []
+      const body = res as unknown as { data: Array<{ roleId: string; roleName: string; roleCode: string }> }
+      return (body.data ?? []).map((r) => ({ id: r.roleId, name: r.roleName, code: r.roleCode }))
     },
     staleTime: 60_000,
   })
