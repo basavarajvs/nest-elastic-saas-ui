@@ -63,7 +63,25 @@ export function SystemSettingsPage() {
     queryKey: ['system', 'settings'],
     queryFn: async () => {
       const res = await SystemAdminController_getSettings()
-      return (res as unknown as { data: Record<string, Setting> }).data ?? {}
+      const body = res as unknown as {
+        success: boolean
+        data: Array<{
+          settingKey: string
+          settingValue: string | number | boolean | object | null
+          description?: string
+          updatedAt?: string
+        }>
+      }
+      const map: Record<string, Setting> = {}
+      for (const s of body.data ?? []) {
+        map[s.settingKey] = {
+          key: s.settingKey,
+          value: s.settingValue,
+          description: s.description,
+          updatedAt: s.updatedAt,
+        }
+      }
+      return map
     },
     staleTime: 60_000,
   })

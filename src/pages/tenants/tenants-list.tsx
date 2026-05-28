@@ -108,11 +108,36 @@ function useTenants(page: number, limit: number, search: string, status: string)
       const res = await SystemAdminController_listTenants(
         params as { page?: number; limit?: number; search?: string; status?: string },
       )
-      const typed = res as unknown as {
-        data: Tenant[]
+      const body = res as unknown as {
+        success: boolean
+        data: Array<{
+          tenantId: string
+          tenantName: string
+          tenantCode: string
+          status: string
+          domain?: string
+          timezone?: string
+          locale?: string
+          createdAt: string
+        }>
         meta: PaginationMeta
       }
-      return typed
+      return {
+        data: body.data.map((t) => ({
+          id: t.tenantId,
+          tenantName: t.tenantName,
+          code: t.tenantCode,
+          domain: t.domain,
+          status: t.status,
+          timezone: t.timezone,
+          locale: t.locale,
+          planId: undefined,
+          planName: undefined,
+          createdBy: undefined,
+          createdAt: t.createdAt,
+        })),
+        meta: body.meta,
+      }
     },
     staleTime: 30_000,
   })

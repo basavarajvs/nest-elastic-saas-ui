@@ -29,13 +29,14 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const fetchUser = useCallback(async (): Promise<AuthUser | null> => {
     try {
-      const { data } = await AXIOS_INSTANCE.get<MeApiResponse>('/users/me')
+      const { data } = await AXIOS_INSTANCE.get<{ success: boolean; data: MeApiResponse }>('/users/me')
+      const userData = data.data
       return {
-        id: data.id,
-        email: data.email,
-        name: data.name,
-        roles: data.roles,
-        permissions: data.permissions,
+        id: userData.id,
+        email: userData.email,
+        name: userData.name,
+        roles: userData.roles,
+        permissions: userData.permissions,
       }
     } catch {
       return null
@@ -63,33 +64,37 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   }, [fetchUser])
 
   const login = useCallback(async (credentials: LoginCredentials): Promise<void> => {
-    const response = await AXIOS_INSTANCE.post<LoginApiResponse>('/auth/login', {
+    const response = await AXIOS_INSTANCE.post<{ success: boolean; data: LoginApiResponse }>('/auth/login', {
       email: credentials.email,
       password: credentials.password,
     })
 
-    if (response.data.requiresMfa) {
-      throw { requiresMfa: true, ...response.data }
+    const loginData = response.data.data
+
+    if (loginData.requiresMfa) {
+      throw { requiresMfa: true, ...loginData }
     }
 
-    storage.setToken(response.data.accessToken)
-    storage.setRefreshToken(response.data.refreshToken)
+    storage.setToken(loginData.accessToken)
+    storage.setRefreshToken(loginData.refreshToken)
 
-    setUser(response.data.user)
+    setUser(loginData.user)
     setIsAuthenticated(true)
   }, [])
 
   const loginWithMfa = useCallback(async (credentials: MfaCredentials): Promise<void> => {
-    const response = await AXIOS_INSTANCE.post<LoginApiResponse>('/auth/login', {
+    const response = await AXIOS_INSTANCE.post<{ success: boolean; data: LoginApiResponse }>('/auth/login', {
       email: credentials.email,
       password: credentials.password,
       mfaCode: credentials.mfaCode,
     })
 
-    storage.setToken(response.data.accessToken)
-    storage.setRefreshToken(response.data.refreshToken)
+    const loginData = response.data.data
 
-    setUser(response.data.user)
+    storage.setToken(loginData.accessToken)
+    storage.setRefreshToken(loginData.refreshToken)
+
+    setUser(loginData.user)
     setIsAuthenticated(true)
   }, [])
 
@@ -115,14 +120,15 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       throw new Error('No refresh token available')
     }
 
-    const { data } = await AXIOS_INSTANCE.post<{ accessToken: string; refreshToken: string }>(
+    const { data } = await AXIOS_INSTANCE.post<{ success: boolean; data: { accessToken: string; refreshToken: string } }>(
       '/auth/refresh',
       { refreshToken: currentRefreshToken },
     )
 
-    storage.setToken(data.accessToken)
-    if (data.refreshToken) {
-      storage.setRefreshToken(data.refreshToken)
+    const tokenData = data.data
+    storage.setToken(tokenData.accessToken)
+    if (tokenData.refreshToken) {
+      storage.setRefreshToken(tokenData.refreshToken)
     }
   }, [])
 

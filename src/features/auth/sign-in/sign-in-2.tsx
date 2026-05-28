@@ -1,11 +1,30 @@
-import { Link } from '@tanstack/react-router'
+import { useEffect } from 'react'
+import { Link, useNavigate } from '@tanstack/react-router'
 import { Logo } from '@/assets/logo'
+import { useAuth } from '@/contexts/auth-context'
 import { cn } from '@/lib/utils'
 import dashboardDark from './assets/dashboard-dark.png'
 import dashboardLight from './assets/dashboard-light.png'
 import { UserAuthForm } from './components/user-auth-form'
 
 export function SignIn2() {
+  const { isAuthenticated, isLoading } = useAuth()
+  const navigate = useNavigate()
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate({ to: '/', replace: true })
+    }
+  }, [isAuthenticated, isLoading, navigate])
+
+  if (isLoading) {
+    return null
+  }
+
+  if (isAuthenticated) {
+    return null
+  }
+
   return (
     <div className='relative container grid h-svh flex-col items-center justify-center lg:max-w-none lg:grid-cols-2 lg:px-0'>
       <div className='lg:p-8'>

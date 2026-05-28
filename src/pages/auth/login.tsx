@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { z } from 'zod'
 import { useForm } from 'react-hook-form'
 import { zodResolver } from '@hookform/resolvers/zod'
@@ -30,7 +30,13 @@ export function LoginPage() {
   const [isLoading, setIsLoading] = useState(false)
   const navigate = useNavigate()
   const search = useSearch({ from: '/(auth)/sign-in' })
-  const { login } = useAuth()
+  const { login, isAuthenticated, isLoading: isAuthLoading } = useAuth()
+
+  useEffect(() => {
+    if (!isAuthLoading && isAuthenticated) {
+      navigate({ to: '/', replace: true })
+    }
+  }, [isAuthenticated, isAuthLoading, navigate])
 
   const {
     register,

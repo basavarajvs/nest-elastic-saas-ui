@@ -95,20 +95,21 @@ AXIOS_INSTANCE.interceptors.response.use(
     }
 
     try {
-      const { data } = await AXIOS_INSTANCE.post<{ accessToken: string; refreshToken: string }>(
+      const { data } = await AXIOS_INSTANCE.post<{ success: boolean; data: { accessToken: string; refreshToken: string } }>(
         '/auth/refresh',
         { refreshToken },
       );
 
-      setToken(data.accessToken);
-      if (data.refreshToken) {
-        setRefreshToken(data.refreshToken);
+      const tokenData = data.data;
+      setToken(tokenData.accessToken);
+      if (tokenData.refreshToken) {
+        setRefreshToken(tokenData.refreshToken);
       }
 
-      processQueue(null, data.accessToken);
+      processQueue(null, tokenData.accessToken);
 
       if (originalRequest.headers) {
-        originalRequest.headers.Authorization = `Bearer ${data.accessToken}`;
+        originalRequest.headers.Authorization = `Bearer ${tokenData.accessToken}`;
       }
       return AXIOS_INSTANCE(originalRequest);
     } catch (refreshError) {
@@ -127,7 +128,7 @@ export const customInstance = <T>(
   init?: RequestInit & { params?: Record<string, string> },
 ): Promise<T> => {
   const config: AxiosRequestConfig = {
-    url,
+    url: url.replace(/^\/api\/v1/, ''),
     method: init?.method as AxiosRequestConfig['method'],
     headers: init?.headers as AxiosRequestConfig['headers'],
     data: init?.body,
